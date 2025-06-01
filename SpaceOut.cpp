@@ -59,7 +59,7 @@ void GameStart(HWND hWindow)
   _pBackground = new StarryBackground(600, 450);
 
   // Play the background music
-  _pGame->PlayMIDISong(TEXT("Music.mid"));
+  //_pGame->PlayMIDISong(TEXT("Music.mid"));
 
   // Start the game
   NewGame();
@@ -176,18 +176,51 @@ void HandleKeys()
   {
     // Move the car based upon left/right key presses
     POINT ptVelocity = _pCarSprite->GetVelocity();
+
+    //  DAMPING EKLENDÝ
+    const float dampingFactor = 0.90f;
+	const float maxSpeed = 10.0f;
+
     if (GetAsyncKeyState(VK_LEFT) < 0)
     {
-      // Move left
-      ptVelocity.x = max(ptVelocity.x - 1, -4);
-      _pCarSprite->SetVelocity(ptVelocity);
+      ptVelocity.x = max(ptVelocity.x - 1, -maxSpeed);
     }
     else if (GetAsyncKeyState(VK_RIGHT) < 0)
     {
       // Move right
-      ptVelocity.x = min(ptVelocity.x + 2, 6);
-      _pCarSprite->SetVelocity(ptVelocity);
+      ptVelocity.x = min(ptVelocity.x + 2, maxSpeed);
     }
+    else
+    {
+        // Stop the car
+        ptVelocity.x = static_cast<int>(ptVelocity.x * dampingFactor);
+        // Küçük hýzlarý sýfýra çek (sürünmesin)
+        if (abs(ptVelocity.x) < 1) ptVelocity.x = 0;
+    }
+     
+    if (GetAsyncKeyState(VK_UP) <0)
+    {
+		ptVelocity.y = max(ptVelocity.y - 1, -maxSpeed);
+    }
+    else if (GetAsyncKeyState(VK_DOWN) < 0)
+    {
+		ptVelocity.y = min(ptVelocity.y + 2, maxSpeed);
+    }
+    else
+	{
+		// Stop the car
+        ptVelocity.y = static_cast<int>(ptVelocity.y * dampingFactor);
+        if (abs(ptVelocity.y) < 1) ptVelocity.y = 0;
+	}
+     
+    _pCarSprite->SetVelocity(ptVelocity);
+
+
+   
+   
+   
+
+    
 
     // Fire missiles based upon spacebar presses
     if ((++_iFireInputDelay > 6) && GetAsyncKeyState(VK_SPACE) < 0)
@@ -196,7 +229,7 @@ void HandleKeys()
       RECT  rcBounds = { 0, 0, 600, 450 };
       RECT  rcPos = _pCarSprite->GetPosition();
       Sprite* pSprite = new Sprite(_pMissileBitmap, rcBounds, BA_DIE);
-      pSprite->SetPosition(rcPos.left + 15, 400);
+      pSprite->SetPosition(rcPos.left + 15, rcPos.top);
       pSprite->SetVelocity(0, -7);
       _pGame->AddSprite(pSprite);
 
@@ -342,7 +375,7 @@ void NewGame()
   // Create the car sprite
   RECT rcBounds = { 0, 0, 600, 450 };
   _pCarSprite = new Sprite(_pCarBitmap, rcBounds, BA_WRAP);
-  _pCarSprite->SetPosition(300, 405);
+  _pCarSprite->SetPosition(300, 250);
   _pGame->AddSprite(_pCarSprite);
 
   // Initialize the game variables
