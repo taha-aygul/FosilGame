@@ -31,6 +31,8 @@ IDB_SMEXPLOSION       BITMAP       "SmExplosion.bmp"
 IDB_LGEXPLOSION       BITMAP       "LgExplosion.bmp"
 IDB_GAMEOVER          BITMAP       "GameOver.bmp"
 
+IDB_LADDER            BITMAP       "ladder.bmp"
+
 //-----------------------------------------------------------------
 // Wave Sounds
 //-----------------------------------------------------------------

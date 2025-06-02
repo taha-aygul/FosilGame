@@ -15,6 +15,7 @@
 #include "Sprite.h"
 #include "Background.h"
 #include "AlienSprite.h"
+#include "PlayerSprite.h"
 
 //-----------------------------------------------------------------
 // Global Variables
@@ -36,8 +37,11 @@ Bitmap*           _pTMissileBitmap;
 Bitmap*           _pSmExplosionBitmap;
 Bitmap*           _pLgExplosionBitmap;
 Bitmap*           _pGameOverBitmap;
+
+Bitmap* _pLadderBitmap;
+
 StarryBackground* _pBackground;
-Sprite*           _pCarSprite;
+PlayerSprite*           _pCarSprite;
 int               _iFireInputDelay;
 int               _iNumLives, _iScore, _iDifficulty;
 BOOL              _bGameOver;

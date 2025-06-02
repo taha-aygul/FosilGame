@@ -42,7 +42,7 @@ void GameStart(HWND hWindow)
   // Create and load the bitmaps
   HDC hDC = GetDC(hWindow);
   _pDesertBitmap = new Bitmap(hDC, IDB_DESERT, _hInstance);
-  _pCarBitmap = new Bitmap(hDC, IDB_CAR, _hInstance);
+  _pCarBitmap = new Bitmap(hDC, IDB_LADDER, _hInstance);
   _pSmCarBitmap = new Bitmap(hDC, IDB_SMCAR, _hInstance);
   _pMissileBitmap = new Bitmap(hDC, IDB_MISSILE, _hInstance);
   _pBlobboBitmap = new Bitmap(hDC, IDB_BLOBBO, _hInstance);
@@ -55,6 +55,8 @@ void GameStart(HWND hWindow)
   _pLgExplosionBitmap = new Bitmap(hDC, IDB_LGEXPLOSION, _hInstance);
   _pGameOverBitmap = new Bitmap(hDC, IDB_GAMEOVER, _hInstance);
 
+  _pLadderBitmap = new Bitmap(hDC, IDB_LADDER, _hInstance);
+
   // Create the starry background
   _pBackground = new StarryBackground(600, 450);
 
@@ -63,6 +65,33 @@ void GameStart(HWND hWindow)
 
   // Start the game
   NewGame();
+}
+
+void NewGame()
+{
+    // Clear the sprites
+    _pGame->CleanupSprites();
+
+    // Create the car sprite
+    RECT rcBounds = { 0, 0, 600, 450 };
+    _pCarSprite = new PlayerSprite(_pCarBitmap, rcBounds, BA_WRAP);
+    _pCarSprite->SetPosition(300, 250);
+    _pGame->AddSprite(_pCarSprite);
+
+	Sprite* pLadderSprite = new Sprite(_pLadderBitmap, rcBounds, BA_WRAP);
+	pLadderSprite->SetPosition(100, 400);
+
+
+
+    // Initialize the game variables
+    _iFireInputDelay = 0;
+    _iScore = 0;
+    _iNumLives = 3;
+    _iDifficulty = 80;
+    _bGameOver = FALSE;
+
+    // Play the background music
+    _pGame->PlayMIDISong();
 }
 
 void GameEnd()
@@ -198,11 +227,11 @@ void HandleKeys()
         if (abs(ptVelocity.x) < 1) ptVelocity.x = 0;
     }
      
-    if (GetAsyncKeyState(VK_UP) <0)
+    if (GetAsyncKeyState(VK_UP) <0 && _pCarSprite -> isCollidingWithLadder)
     {
 		ptVelocity.y = max(ptVelocity.y - 1, -maxSpeed);
     }
-    else if (GetAsyncKeyState(VK_DOWN) < 0)
+    else if (GetAsyncKeyState(VK_DOWN) < 0 && _pCarSprite->isCollidingWithLadder)
     {
 		ptVelocity.y = min(ptVelocity.y + 2, maxSpeed);
     }
@@ -340,6 +369,21 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
     }
   }
 
+
+  // See if the player collided with ladder
+  if (pHitter == _pCarBitmap && pHittee == _pLadderBitmap)
+  {
+	  // If the player is on the ladder, allow them to climb up
+	  if (_pCarSprite->isCollidingWithLadder)
+	  {
+		  RECT rcPos = pSpriteHittee->GetPosition();
+		  rcPos.top -= 5; // Move up
+		  pSpriteHittee->SetPosition(rcPos.left, rcPos.top);
+	  }
+	  return TRUE;
+  }
+
+
   return FALSE;
 }
 
@@ -367,27 +411,7 @@ void SpriteDying(Sprite* pSprite)
 //-----------------------------------------------------------------
 // Functions
 //-----------------------------------------------------------------
-void NewGame()
-{
-  // Clear the sprites
-  _pGame->CleanupSprites();
 
-  // Create the car sprite
-  RECT rcBounds = { 0, 0, 600, 450 };
-  _pCarSprite = new Sprite(_pCarBitmap, rcBounds, BA_WRAP);
-  _pCarSprite->SetPosition(300, 250);
-  _pGame->AddSprite(_pCarSprite);
-
-  // Initialize the game variables
-  _iFireInputDelay = 0;
-  _iScore = 0;
-  _iNumLives = 3;
-  _iDifficulty = 80;
-  _bGameOver = FALSE;
-
-  // Play the background music
-  _pGame->PlayMIDISong();
-}
 
 void AddAlien()
 {

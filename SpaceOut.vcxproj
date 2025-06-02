@@ -99,6 +99,7 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Bitmap.cpp" />
     <ClCompile Include="GameEngine.cpp" />
+    <ClCompile Include="PlayerSprite.cpp" />
     <ClCompile Include="SpaceOut.cpp" />
     <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
@@ -107,6 +108,7 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="Bitmap.h" />
     <ClInclude Include="GameEngine.h" />
+    <ClInclude Include="PlayerSprite.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SpaceOut.h" />
     <ClInclude Include="Sprite.h" />
