@@ -13,16 +13,16 @@ public:
 
 public:
     // Constructor
-    PlayerSprite(Bitmap* pBitmap)
+    PlayerSprite(CustomBitmap* pBitmap)
         : Sprite(pBitmap) {
     }  // Base sýnýf constructor'ýný çaðýrýr
 
-    PlayerSprite(Bitmap* pBitmap, RECT& rcBounds,
+    PlayerSprite(CustomBitmap* pBitmap, RECT& rcBounds,
         BOUNDSACTION baBoundsAction = BA_STOP)
         : Sprite(pBitmap, rcBounds, baBoundsAction) {
     }
 
-    PlayerSprite(Bitmap* pBitmap, POINT ptPosition, POINT ptVelocity, int iZOrder,
+    PlayerSprite(CustomBitmap* pBitmap, POINT ptPosition, POINT ptVelocity, int iZOrder,
         RECT& rcBounds, BOUNDSACTION baBoundsAction = BA_STOP)
         : Sprite(pBitmap, ptPosition, ptVelocity, iZOrder, rcBounds, baBoundsAction) {
     }

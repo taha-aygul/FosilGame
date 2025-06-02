@@ -18,7 +18,7 @@ class AlienSprite : public Sprite
 {
 public:
   // Constructor(s)/Destructor
-          AlienSprite(Bitmap* pBitmap, RECT& rcBounds,
+          AlienSprite(CustomBitmap* pBitmap, RECT& rcBounds,
             BOUNDSACTION baBoundsAction = BA_STOP);
   virtual ~AlienSprite();
 

@@ -11,7 +11,7 @@
 //-----------------------------------------------------------------
 // Sprite Constructor(s)/Destructor
 //-----------------------------------------------------------------
-Sprite::Sprite(Bitmap* pBitmap)
+Sprite::Sprite(CustomBitmap* pBitmap)
 {
   // Initialize the member variables
   m_pBitmap = pBitmap;
@@ -28,7 +28,7 @@ Sprite::Sprite(Bitmap* pBitmap)
   m_bOneCycle = FALSE;
 }
 
-Sprite::Sprite(Bitmap* pBitmap, RECT& rcBounds, BOUNDSACTION baBoundsAction)
+Sprite::Sprite(CustomBitmap* pBitmap, RECT& rcBounds, BOUNDSACTION baBoundsAction)
 {
   // Calculate a random position
   int iXPos = rand() % (rcBounds.right - rcBounds.left);
@@ -50,7 +50,7 @@ Sprite::Sprite(Bitmap* pBitmap, RECT& rcBounds, BOUNDSACTION baBoundsAction)
   m_bOneCycle = FALSE;
 }
 
-Sprite::Sprite(Bitmap* pBitmap, POINT ptPosition, POINT ptVelocity, int iZOrder,
+Sprite::Sprite(CustomBitmap* pBitmap, POINT ptPosition, POINT ptVelocity, int iZOrder,
     RECT& rcBounds, BOUNDSACTION baBoundsAction)
 {
   // Initialize the member variables

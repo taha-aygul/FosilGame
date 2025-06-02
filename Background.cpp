@@ -7,7 +7,7 @@
 // Include Files
 //-----------------------------------------------------------------
 #include "Background.h"
-
+#include "CustomBitmap.h"
 //-----------------------------------------------------------------
 // Background Constructor(s)/Destructor
 //-----------------------------------------------------------------
@@ -20,7 +20,7 @@ Background::Background(int iWidth, int iHeight, COLORREF crColor)
   m_pBitmap = NULL;
 }
 
-Background::Background(Bitmap* pBitmap)
+Background::Background(CustomBitmap* pBitmap)
 {
   // Initialize the member variables
   m_crColor = 0;

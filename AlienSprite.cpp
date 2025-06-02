@@ -11,18 +11,18 @@
 //-----------------------------------------------------------------
 // External Global Variables
 //-----------------------------------------------------------------
-extern Bitmap* _pBlobboBitmap;
-extern Bitmap* _pBMissileBitmap;
-extern Bitmap* _pJellyBitmap;
-extern Bitmap* _pJMissileBitmap;
-extern Bitmap* _pTimmyBitmap;
-extern Bitmap* _pTMissileBitmap;
+extern CustomBitmap* _pBlobboBitmap;
+extern CustomBitmap* _pBMissileBitmap;
+extern CustomBitmap* _pJellyBitmap;
+extern CustomBitmap* _pJMissileBitmap;
+extern CustomBitmap* _pTimmyBitmap;
+extern CustomBitmap* _pTMissileBitmap;
 extern int     _iDifficulty;
 
 //-----------------------------------------------------------------
 // AlienSprite Constructor(s)/Destructor
 //-----------------------------------------------------------------
-AlienSprite::AlienSprite(Bitmap* pBitmap, RECT& rcBounds,
+AlienSprite::AlienSprite(CustomBitmap* pBitmap, RECT& rcBounds,
   BOUNDSACTION baBoundsAction) : Sprite(pBitmap, rcBounds,
   baBoundsAction)
 {

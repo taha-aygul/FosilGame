@@ -7,6 +7,7 @@
 // Include Files
 //-----------------------------------------------------------------
 #include "SpaceOut.h"
+#include "CustomBitmap.h"
 
 //-----------------------------------------------------------------
 // Game Engine Functions
@@ -41,21 +42,21 @@ void GameStart(HWND hWindow)
 
   // Create and load the bitmaps
   HDC hDC = GetDC(hWindow);
-  _pDesertBitmap = new Bitmap(hDC, IDB_DESERT, _hInstance);
-  _pCarBitmap = new Bitmap(hDC, IDB_LADDER, _hInstance);
-  _pSmCarBitmap = new Bitmap(hDC, IDB_SMCAR, _hInstance);
-  _pMissileBitmap = new Bitmap(hDC, IDB_MISSILE, _hInstance);
-  _pBlobboBitmap = new Bitmap(hDC, IDB_BLOBBO, _hInstance);
-  _pBMissileBitmap = new Bitmap(hDC, IDB_BMISSILE, _hInstance);
-  _pJellyBitmap = new Bitmap(hDC, IDB_JELLY, _hInstance);
-  _pJMissileBitmap = new Bitmap(hDC, IDB_JMISSILE, _hInstance);
-  _pTimmyBitmap = new Bitmap(hDC, IDB_TIMMY, _hInstance);
-  _pTMissileBitmap = new Bitmap(hDC, IDB_TMISSILE, _hInstance);
-  _pSmExplosionBitmap = new Bitmap(hDC, IDB_SMEXPLOSION, _hInstance);
-  _pLgExplosionBitmap = new Bitmap(hDC, IDB_LGEXPLOSION, _hInstance);
-  _pGameOverBitmap = new Bitmap(hDC, IDB_GAMEOVER, _hInstance);
+  _pDesertBitmap = new CustomBitmap(hDC, IDB_DESERT, _hInstance);
+  _pCarBitmap = new CustomBitmap(hDC, IDB_LADDER, _hInstance);
+  _pSmCarBitmap = new CustomBitmap(hDC, IDB_SMCAR, _hInstance);
+  _pMissileBitmap = new CustomBitmap(hDC, IDB_MISSILE, _hInstance);
+  _pBlobboBitmap = new CustomBitmap(hDC, IDB_BLOBBO, _hInstance);
+  _pBMissileBitmap = new CustomBitmap(hDC, IDB_BMISSILE, _hInstance);
+  _pJellyBitmap = new CustomBitmap(hDC, IDB_JELLY, _hInstance);
+  _pJMissileBitmap = new CustomBitmap(hDC, IDB_JMISSILE, _hInstance);
+  _pTimmyBitmap = new CustomBitmap(hDC, IDB_TIMMY, _hInstance);
+  _pTMissileBitmap = new CustomBitmap(hDC, IDB_TMISSILE, _hInstance);
+  _pSmExplosionBitmap = new CustomBitmap(hDC, IDB_SMEXPLOSION, _hInstance);
+  _pLgExplosionBitmap = new CustomBitmap(hDC, IDB_LGEXPLOSION, _hInstance);
+  _pGameOverBitmap = new CustomBitmap(hDC, IDB_GAMEOVER, _hInstance);
 
-  _pLadderBitmap = new Bitmap(hDC, IDB_LADDER, _hInstance);
+  _pLadderBitmap = new CustomBitmap(hDC, IDB_LADDER, _hInstance);
 
   // Create the starry background
   _pBackground = new StarryBackground(600, 450);
@@ -296,8 +297,8 @@ void HandleJoystick(JOYSTATE jsJoystickState)
 BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 {
   // See if a player missile and an alien have collided
-  Bitmap* pHitter = pSpriteHitter->GetBitmap();
-  Bitmap* pHittee = pSpriteHittee->GetBitmap();
+    CustomBitmap* pHitter = pSpriteHitter->GetBitmap();
+    CustomBitmap* pHittee = pSpriteHittee->GetBitmap();
   if ((pHitter == _pMissileBitmap && (pHittee == _pBlobboBitmap ||
     pHittee == _pJellyBitmap || pHittee == _pTimmyBitmap)) ||
     (pHittee == _pMissileBitmap && (pHitter == _pBlobboBitmap ||

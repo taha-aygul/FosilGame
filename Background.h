@@ -9,7 +9,7 @@
 // Include Files
 //-----------------------------------------------------------------
 #include <windows.h>
-#include "Bitmap.h"
+#include "CustomBitmap.h"
 
 //-----------------------------------------------------------------
 // Background Class
@@ -20,12 +20,12 @@ protected:
   // Member Variables
   int       m_iWidth, m_iHeight;
   COLORREF  m_crColor;
-  Bitmap*   m_pBitmap;
+  CustomBitmap*   m_pBitmap;
 
 public:
   // Constructor(s)/Destructor
           Background(int iWidth, int iHeight, COLORREF crColor);
-          Background(Bitmap* pBitmap);
+          Background(CustomBitmap* pBitmap);
   virtual ~Background();
 
   // General Methods

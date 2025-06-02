@@ -28,6 +28,8 @@
 
 #define IDB_LADDER			2013
 #define IDB_REDBLOCK		2014
+#define IDB_BLUEBLOCK		2015
+#define IDB_GREENBLOCK		2016
 
 
 //-----------------------------------------------------------------

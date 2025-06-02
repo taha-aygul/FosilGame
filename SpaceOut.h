@@ -11,7 +11,7 @@
 #include <windows.h>
 #include "Resource.h"
 #include "GameEngine.h"
-#include "Bitmap.h"
+#include "CustomBitmap.h"
 #include "Sprite.h"
 #include "Background.h"
 #include "AlienSprite.h"
@@ -24,21 +24,21 @@ HINSTANCE         _hInstance;
 GameEngine*       _pGame;
 HDC               _hOffscreenDC;
 HBITMAP           _hOffscreenBitmap;
-Bitmap*           _pDesertBitmap;
-Bitmap*           _pCarBitmap;
-Bitmap*           _pSmCarBitmap;
-Bitmap*           _pMissileBitmap;
-Bitmap*           _pBlobboBitmap;
-Bitmap*           _pBMissileBitmap;
-Bitmap*           _pJellyBitmap;
-Bitmap*           _pJMissileBitmap;
-Bitmap*           _pTimmyBitmap;
-Bitmap*           _pTMissileBitmap;
-Bitmap*           _pSmExplosionBitmap;
-Bitmap*           _pLgExplosionBitmap;
-Bitmap*           _pGameOverBitmap;
+CustomBitmap*           _pDesertBitmap;
+CustomBitmap*           _pCarBitmap;
+CustomBitmap*           _pSmCarBitmap;
+CustomBitmap*           _pMissileBitmap;
+CustomBitmap*           _pBlobboBitmap;
+CustomBitmap*           _pBMissileBitmap;
+CustomBitmap*           _pJellyBitmap;
+CustomBitmap*           _pJMissileBitmap;
+CustomBitmap*           _pTimmyBitmap;
+CustomBitmap*           _pTMissileBitmap;
+CustomBitmap*           _pSmExplosionBitmap;
+CustomBitmap*           _pLgExplosionBitmap;
+CustomBitmap*           _pGameOverBitmap;
 
-Bitmap* _pLadderBitmap;
+CustomBitmap* _pLadderBitmap;
 
 StarryBackground* _pBackground;
 PlayerSprite*           _pCarSprite;

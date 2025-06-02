@@ -9,7 +9,7 @@
 // Include Files
 //-----------------------------------------------------------------
 #include <windows.h>
-#include "Bitmap.h"
+#include "CustomBitmap.h"
 
 //-----------------------------------------------------------------
 // Custom Data Types
@@ -32,7 +32,7 @@ class Sprite
 {
 protected:
   // Member Variables
-  Bitmap*       m_pBitmap;
+  CustomBitmap*       m_pBitmap;
   int           m_iNumFrames, m_iCurFrame;
   int           m_iFrameDelay, m_iFrameTrigger;
   RECT          m_rcPosition,
@@ -51,10 +51,10 @@ protected:
 
 public:
   // Constructor(s)/Destructor
-  Sprite(Bitmap* pBitmap);
-  Sprite(Bitmap* pBitmap, RECT& rcBounds,
+  Sprite(CustomBitmap* pBitmap);
+  Sprite(CustomBitmap* pBitmap, RECT& rcBounds,
     BOUNDSACTION baBoundsAction = BA_STOP);
-  Sprite(Bitmap* pBitmap, POINT ptPosition, POINT ptVelocity, int iZOrder,
+  Sprite(CustomBitmap* pBitmap, POINT ptPosition, POINT ptVelocity, int iZOrder,
     RECT& rcBounds, BOUNDSACTION baBoundsAction = BA_STOP);
   virtual ~Sprite();
 
@@ -67,7 +67,7 @@ public:
   void                  Kill()      { m_bDying = TRUE; };
 
   // Accessor Methods
-  Bitmap* GetBitmap()               { return m_pBitmap; };
+  CustomBitmap* GetBitmap()               { return m_pBitmap; };
   void    SetNumFrames(int iNumFrames, BOOL bOneCycle = FALSE);
   void    SetFrameDelay(int iFrameDelay) { m_iFrameDelay = iFrameDelay; };
   RECT&   GetPosition()             { return m_rcPosition; };

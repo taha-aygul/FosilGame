@@ -63,7 +63,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;msimg32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;msimg32.lib;gdiplus.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)SpaceOut.exe</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)SpaceOut.pdb</ProgramDatabaseFile>
@@ -97,7 +97,8 @@
   <ItemGroup>
     <ClCompile Include="AlienSprite.cpp" />
     <ClCompile Include="Background.cpp" />
-    <ClCompile Include="Bitmap.cpp" />
+    <ClCompile Include="CustomBitmap.cpp" />
+    <ClCompile Include="BitmapLevelLoader.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="PlayerSprite.cpp" />
     <ClCompile Include="SpaceOut.cpp" />
@@ -106,7 +107,8 @@
   <ItemGroup>
     <ClInclude Include="AlienSprite.h" />
     <ClInclude Include="Background.h" />
-    <ClInclude Include="Bitmap.h" />
+    <ClInclude Include="CustomBitmap.h" />
+    <ClInclude Include="BitmapLevelLoader.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="PlayerSprite.h" />
     <ClInclude Include="Resource.h" />
