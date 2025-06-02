@@ -117,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="_redBlock.bmp" />
+    <Image Include="_Level01.bmp" />
     <Image Include="_ladder.bmp" />
     <Image Include="Blobbo.bmp" />
     <Image Include="BMissile.bmp" />

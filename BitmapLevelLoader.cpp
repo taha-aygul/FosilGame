@@ -9,7 +9,11 @@
 
 // GDI+ token
 static ULONG_PTR gdiPlusToken = 0;
+HDC BitmapLevelLoader::hDC = nullptr;
+HINSTANCE BitmapLevelLoader::hInstance = nullptr;
 
+
+// ---------------------------------------------------------
 BitmapLevelLoader::BitmapLevelLoader() {}
 BitmapLevelLoader::~BitmapLevelLoader() {}
 
@@ -36,7 +40,8 @@ void BitmapLevelLoader::ShutdownGDIPlus()
 //  levelResourceID: resource.h içinde tanýmlý BMP ID’si (örneðin IDB_LEVEL01)
 //  tileSize: her pixelin oyun dünyasýndaki gerçek geniþliði (ör.:16)
 // ---------------------------------------------------------
-void BitmapLevelLoader::GenerateLevelFromBitmap(int levelResourceID, int tileSize,HDC hDC,HINSTANCE hInstance)
+
+void BitmapLevelLoader::GenerateLevelFromBitmap(int levelResourceID, int tileSize)
 {
     // 1) Bellekteki resource’tan HBITMAP elde et
     HBITMAP hBmp = nullptr;
@@ -83,17 +88,17 @@ void BitmapLevelLoader::GenerateLevelFromBitmap(int levelResourceID, int tileSiz
             if (r == 255 && g == 0 && b == 0)
             {
                 // Kýrmýzý: Ground (Zemin) bloðu
-                CreateGroundTile((int)x, (int)y, tileSize,hDC,hInstance);
+                CreateGroundTile((int)x, (int)y, tileSize);
             }
             else if (r == 0 && g == 255 && b == 0)
             {
                 // Yeþil: Ladder (Merdiven)
-                CreateLadderTile((int)x, (int)y, tileSize, hDC, hInstance);
+                CreateLadderTile((int)x, (int)y, tileSize);
             }
             else if (r == 0 && g == 0 && b == 255)
             {
                 // Mavi: Enemy
-                CreateEnemyAt((int)x, (int)y, tileSize, hDC, hInstance);
+                CreateEnemyAt((int)x, (int)y, tileSize);
             }
             else
             {
@@ -114,8 +119,9 @@ void BitmapLevelLoader::GenerateLevelFromBitmap(int levelResourceID, int tileSiz
 //   pixelX, pixelY: tilemap üzerindeki koordinat (0..79, 0..59 gibi).
 //   tileSize: her pikseli kaç piksel geniþliðe dönüþtüreceðiz (ör:16).
 // ---------------------------------------------------------
-void BitmapLevelLoader::CreateGroundTile(int pixelX, int pixelY, int tileSize, HDC hDC, HINSTANCE hInstance)
+void BitmapLevelLoader::CreateGroundTile(int pixelX, int pixelY, int tileSize)
 {
+
     // 1) Dünya koordinatýný hesapla
     float worldX = (float)(pixelX * tileSize);
     float worldY = (float)(pixelY * tileSize);
@@ -125,8 +131,10 @@ void BitmapLevelLoader::CreateGroundTile(int pixelX, int pixelY, int tileSize, H
     //    SpaceOut.rc: IDB_GROUND BITMAP "res\\ground.bmp"
     // Burada, GroundSprite adýnda yeni bir sýnýf yoksa, Sprite sýnýfýný da kullanabilirsiniz:
     //
-    CustomBitmap* pGroundBmp = new CustomBitmap(hDC, IDB_BLUEBLOCK, hInstance);
-    Sprite* ground = new Sprite(pGroundBmp);
+    CustomBitmap* pGroundBmp = new CustomBitmap(hDC, IDB_REDBLOCK, hInstance);
+  
+    RECT rcBounds = { 0, 0, 600, 450 };
+    Sprite* ground = new Sprite(pGroundBmp,rcBounds,BA_WRAP);
 
     // 3) Sprite’ýn pozisyonunu ayarla:
     POINT pt;
@@ -134,14 +142,17 @@ void BitmapLevelLoader::CreateGroundTile(int pixelX, int pixelY, int tileSize, H
     pt.y = (LONG)worldY;
     ground->SetPosition(pt);
 
+
     // 4) Engine’e ekle
     GameEngine::GetEngine()->AddSprite(ground);
+// 5) Eðer isterseniz, ground için bir ses de ekleyebilirsiniz:
+// PlaySound((LPCSTR)IDW_GROUNDTILE, hInstance, SND_ASYNC | SND_RESOURCE);
 }
 
 // ---------------------------------------------------------
 // CreateLadderTile
 // ---------------------------------------------------------
-void BitmapLevelLoader::CreateLadderTile(int pixelX, int pixelY, int tileSize, HDC hDC, HINSTANCE hInstance)
+void BitmapLevelLoader::CreateLadderTile(int pixelX, int pixelY, int tileSize)
 {
     float worldX = (float)(pixelX * tileSize);
     float worldY = (float)(pixelY * tileSize);
@@ -166,7 +177,7 @@ void BitmapLevelLoader::CreateLadderTile(int pixelX, int pixelY, int tileSize, H
 // ---------------------------------------------------------
 // CreateEnemyAt
 // ---------------------------------------------------------
-void BitmapLevelLoader::CreateEnemyAt(int pixelX, int pixelY, int tileSize, HDC hDC, HINSTANCE hInstance)
+void BitmapLevelLoader::CreateEnemyAt(int pixelX, int pixelY, int tileSize)
 {
     float worldX = (float)(pixelX * tileSize);
     float worldY = (float)(pixelY * tileSize);
@@ -176,6 +187,8 @@ void BitmapLevelLoader::CreateEnemyAt(int pixelX, int pixelY, int tileSize, HDC 
     //    SpaceOut.rc: IDB_ENEMY BITMAP "res\\enemy.bmp"
     
     CustomBitmap* pEnemyBmp = new CustomBitmap(hDC, IDB_REDBLOCK, hInstance);
+    
+    
     Sprite* enemy = new Sprite(pEnemyBmp);
 
     POINT pt;

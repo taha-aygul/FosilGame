@@ -8,6 +8,7 @@
 //-----------------------------------------------------------------
 #include "SpaceOut.h"
 #include "CustomBitmap.h"
+#include "BitmapLevelLoader.h"
 
 //-----------------------------------------------------------------
 // Game Engine Functions
@@ -34,6 +35,11 @@ void GameStart(HWND hWindow)
   // Seed the random number generator
   srand(GetTickCount());
 
+  // Initialize GDI+ for bitmap loading
+  HDC hDC = GetDC(hWindow);
+  BitmapLevelLoader::InitGDIPlus();
+  BitmapLevelLoader::hDC = hDC;
+  BitmapLevelLoader::hInstance = _hInstance;
   // Create the offscreen device context and bitmap
   _hOffscreenDC = CreateCompatibleDC(GetDC(hWindow));
   _hOffscreenBitmap = CreateCompatibleBitmap(GetDC(hWindow),
@@ -41,7 +47,6 @@ void GameStart(HWND hWindow)
   SelectObject(_hOffscreenDC, _hOffscreenBitmap);
 
   // Create and load the bitmaps
-  HDC hDC = GetDC(hWindow);
   _pDesertBitmap = new CustomBitmap(hDC, IDB_DESERT, _hInstance);
   _pCarBitmap = new CustomBitmap(hDC, IDB_LADDER, _hInstance);
   _pSmCarBitmap = new CustomBitmap(hDC, IDB_SMCAR, _hInstance);
@@ -56,7 +61,8 @@ void GameStart(HWND hWindow)
   _pLgExplosionBitmap = new CustomBitmap(hDC, IDB_LGEXPLOSION, _hInstance);
   _pGameOverBitmap = new CustomBitmap(hDC, IDB_GAMEOVER, _hInstance);
 
-  _pLadderBitmap = new CustomBitmap(hDC, IDB_LADDER, _hInstance);
+  denemeBitmap = new CustomBitmap(hDC, IDB_REDBLOCK, _hInstance);
+  deneme2Bitmap = new CustomBitmap(hDC, IDB_REDBLOCK, _hInstance);
 
   // Create the starry background
   _pBackground = new StarryBackground(600, 450);
@@ -73,16 +79,21 @@ void NewGame()
     // Clear the sprites
     _pGame->CleanupSprites();
 
+	BitmapLevelLoader::GenerateLevelFromBitmap(IDB_LEVEL01, 10);
+
     // Create the car sprite
     RECT rcBounds = { 0, 0, 600, 450 };
     _pCarSprite = new PlayerSprite(_pCarBitmap, rcBounds, BA_WRAP);
-    _pCarSprite->SetPosition(300, 250);
+    _pCarSprite->SetPosition(400, 250);
     _pGame->AddSprite(_pCarSprite);
 
-	Sprite* pLadderSprite = new Sprite(_pLadderBitmap, rcBounds, BA_WRAP);
-	pLadderSprite->SetPosition(100, 400);
-
-
+	Sprite* denemeSprite = new Sprite(denemeBitmap, rcBounds, BA_WRAP);
+    denemeSprite->SetPosition(400, 250);
+    GameEngine::GetEngine()->AddSprite(denemeSprite);
+    
+    Sprite* deneme2Sprite = new Sprite(deneme2Bitmap, rcBounds, BA_WRAP);
+    deneme2Sprite->SetPosition(200, 300);
+    GameEngine::GetEngine()->AddSprite(deneme2Sprite);
 
     // Initialize the game variables
     _iFireInputDelay = 0;
@@ -99,6 +110,8 @@ void GameEnd()
 {
   // Close the MIDI player for the background music
   _pGame->CloseMIDIPlayer();
+  // Shutdown GDI+
+  BitmapLevelLoader::ShutdownGDIPlus();
 
   // Cleanup the offscreen device context and bitmap
   DeleteObject(_hOffscreenBitmap);
@@ -371,19 +384,7 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
   }
 
 
-  // See if the player collided with ladder
-  if (pHitter == _pCarBitmap && pHittee == _pLadderBitmap)
-  {
-	  // If the player is on the ladder, allow them to climb up
-	  if (_pCarSprite->isCollidingWithLadder)
-	  {
-		  RECT rcPos = pSpriteHittee->GetPosition();
-		  rcPos.top -= 5; // Move up
-		  pSpriteHittee->SetPosition(rcPos.left, rcPos.top);
-	  }
-	  return TRUE;
-  }
-
+ 
 
   return FALSE;
 }

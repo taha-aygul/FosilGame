@@ -33,6 +33,7 @@ IDB_GAMEOVER          BITMAP       "GameOver.bmp"
 
 IDB_LADDER            BITMAP       "_ladder.bmp"
 IDB_REDBLOCK          BITMAP       "_redBlock.bmp"
+IDB_LEVEL01			  BITMAP       "_Level01.bmp"
 
 //-----------------------------------------------------------------
 // Wave Sounds

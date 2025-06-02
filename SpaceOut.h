@@ -38,7 +38,8 @@ CustomBitmap*           _pSmExplosionBitmap;
 CustomBitmap*           _pLgExplosionBitmap;
 CustomBitmap*           _pGameOverBitmap;
 
-CustomBitmap* _pLadderBitmap;
+CustomBitmap* denemeBitmap;
+CustomBitmap* deneme2Bitmap;
 
 StarryBackground* _pBackground;
 PlayerSprite*           _pCarSprite;
