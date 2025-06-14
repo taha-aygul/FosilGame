@@ -84,7 +84,7 @@ void NewGame()
     // Create the car sprite
     RECT rcBounds = { 0, 0, 600, 450 };
     _pCarSprite = new PlayerSprite(_pCarBitmap, rcBounds, BA_WRAP);
-    _pCarSprite->SetPosition(400, 250);
+    _pCarSprite->SetPosition(10, 10);
     _pGame->AddSprite(_pCarSprite);
 
 	Sprite* denemeSprite = new Sprite(denemeBitmap, rcBounds, BA_WRAP);
@@ -220,7 +220,7 @@ void HandleKeys()
     // Move the car based upon left/right key presses
     POINT ptVelocity = _pCarSprite->GetVelocity();
 
-    //  DAMPING EKLENDÝ
+    //  DAMPING EKLENDï¿½
     const float dampingFactor = 0.90f;
 	const float maxSpeed = 10.0f;
 
@@ -237,7 +237,7 @@ void HandleKeys()
     {
         // Stop the car
         ptVelocity.x = static_cast<int>(ptVelocity.x * dampingFactor);
-        // Küçük hýzlarý sýfýra çek (sürünmesin)
+        // Kï¿½ï¿½ï¿½k hï¿½zlarï¿½ sï¿½fï¿½ra ï¿½ek (sï¿½rï¿½nmesin)
         if (abs(ptVelocity.x) < 1) ptVelocity.x = 0;
     }
      
