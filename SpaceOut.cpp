@@ -232,6 +232,8 @@ void LoadCurrentLevel() {
     _pCarSprite = new PlayerSprite(_pCarBitmap, rcBounds, BA_WRAP);
     _pCarSprite->SetPosition(10, 10);
     _pGame->AddSprite(_pCarSprite);
+
+    _bGameOver = false;
 }
 
 
@@ -245,6 +247,14 @@ bool AllEggsCollected()
 
 void GameCycle()
 {
+    if (_bGameOver) {
+
+
+        LoadCurrentLevel();
+        return;
+    }
+
+
   if (!_bGameOver)
   {
           // Check for level completion (example: all eggs collected)
@@ -379,84 +389,14 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
         pSpriteHitter->SetVelocity(-pSpriteHitter->GetVelocity().x, 0);
     }
     
-
-  if ((pHitter == _pMissileBitmap && (pHittee == _pBlobboBitmap ||
-    pHittee == _pJellyBitmap || pHittee == _pTimmyBitmap)) ||
-    (pHittee == _pMissileBitmap && (pHitter == _pBlobboBitmap ||
-    pHitter == _pJellyBitmap || pHitter == _pTimmyBitmap)))
-  {
-    // Play the small explosion sound
-    PlaySound((LPCSTR)IDW_LGEXPLODE, _hInstance, SND_ASYNC |
-      SND_RESOURCE);
-
-    // Kill both sprites
-    pSpriteHitter->Kill();
-    pSpriteHittee->Kill();
-
-    // Create a large explosion sprite at the alien's position
-    RECT rcBounds = { 0, 0, 600, 450 };
-    RECT rcPos;
-    if (pHitter == _pMissileBitmap)
-      rcPos = pSpriteHittee->GetPosition();
-    else
-      rcPos = pSpriteHitter->GetPosition();
-    Sprite* pSprite = new Sprite(_pLgExplosionBitmap, rcBounds);
-    pSprite->SetNumFrames(8, TRUE);
-    pSprite->SetPosition(rcPos.left, rcPos.top);
-    _pGame->AddSprite(pSprite);
-
-    // Update the score
-    _iScore += 25;
-    _iDifficulty = max(80 - (_iScore / 20), 20);
-  }
-
-  // See if an alien missile has collided with the car
-  if ((pHitter == _pCarBitmap && (pHittee == _pBMissileBitmap ||
-    pHittee == _pJMissileBitmap || pHittee == _pTMissileBitmap)) ||
-    (pHittee == _pCarBitmap && (pHitter == _pBMissileBitmap ||
-    pHitter == _pJMissileBitmap || pHitter == _pTMissileBitmap)))
-  {
-    // Play the large explosion sound
-    PlaySound((LPCSTR)IDW_LGEXPLODE, _hInstance, SND_ASYNC |
-      SND_RESOURCE);
-
-    // Kill the missile sprite
-    if (pHitter == _pCarBitmap)
-      pSpriteHittee->Kill();
-    else
-      pSpriteHitter->Kill();
-
-    // Create a large explosion sprite at the car's position
-    RECT rcBounds = { 0, 0, 600, 480 };
-    RECT rcPos;
-    if (pHitter == _pCarBitmap)
-      rcPos = pSpriteHitter->GetPosition();
-    else
-      rcPos = pSpriteHittee->GetPosition();
-    Sprite* pSprite = new Sprite(_pLgExplosionBitmap, rcBounds);
-    pSprite->SetNumFrames(8, TRUE);
-    pSprite->SetPosition(rcPos.left, rcPos.top);
-    _pGame->AddSprite(pSprite);
-
-    // Move the car back to the start
-    _pCarSprite->SetPosition(300, 405);
-
-    // See if the game is over
-    if (--_iNumLives == 0)
-    {
-      // Play the game over sound
-      PlaySound((LPCSTR)IDW_GAMEOVER, _hInstance, SND_ASYNC |
-        SND_RESOURCE);
-      _bGameOver = TRUE;
-    }
-  }
-
   if (pHitter == _pCarBitmap) {
 
 
       if (pHittee == _pGame->_greenEnemyBitmap || pHittee == _pGame->_chaserEnemyBitmap)
       {
-          LoadCurrentLevel();
+          PlaySound((LPCSTR)IDW_GAMEOVER, _hInstance, SND_ASYNC |
+              SND_RESOURCE);
+          _bGameOver = true;
       }
   }
 
@@ -465,7 +405,9 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 
       if (pHitter == _pGame->_greenEnemyBitmap || pHitter == _pGame->_chaserEnemyBitmap)
       {
-          LoadCurrentLevel();
+          PlaySound((LPCSTR)IDW_GAMEOVER, _hInstance, SND_ASYNC |
+              SND_RESOURCE);
+          _bGameOver = true;
       }
 
 
