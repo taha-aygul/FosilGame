@@ -117,6 +117,9 @@ void BitmapLevelLoader::GenerateLevelFromBitmap(int levelResourceID, int tileSiz
             else if (r == 128 && g == 0 && b == 128) {
                 CreateChaserEnemy((int)x, (int)y, tileSize);
             }
+            else if (r == 128 && g == 0 && b == 0) {
+                CreateStalkerEnemy((int)x, (int)y, tileSize);
+            }
             else
             {
                 // Siyah veya başka renkler: Boş (hiçbir şey yapma)
@@ -303,6 +306,29 @@ void BitmapLevelLoader::CreateGreenEnemy(int pixelX, int pixelY, int tileSize)
     // 4) Engine�e ekle
     GameEngine::GetEngine()->AddSprite(egg);
 }
+
+void BitmapLevelLoader::CreateStalkerEnemy(int pixelX, int pixelY, int tileSize)
+{
+
+    float worldX = (float)(pixelX * tileSize);
+    float worldY = (float)(pixelY * tileSize);
+
+    RECT rcBounds = { 0, 0, 600, 450 };
+    AlienSprite* egg = new AlienSprite(GameEngine::GetEngine()->_stalkerEnemyBitmap, rcBounds, BA_BOUNCE);
+    egg->SetNumFrames(8);
+    egg->SetStalker(true);
+
+
+    POINT pt;
+    pt.x = (LONG)worldX;
+    pt.y = (LONG)worldY;
+    egg->SetPosition(pt);
+
+    // 4) Engine�e ekle
+    GameEngine::GetEngine()->AddSprite(egg);
+}
+
+
 
 void BitmapLevelLoader::CreateInvisibleEdge(int pixelX, int pixelY, int tileSize)
 {

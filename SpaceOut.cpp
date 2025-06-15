@@ -16,6 +16,7 @@
 BOOL GameInitialize(HINSTANCE hInstance)
 {
   // Create the game engine
+
   _pGame = new GameEngine(hInstance, TEXT("Space Out"),
     TEXT("Space Out"), IDI_SPACEOUT, IDI_SPACEOUT_SM, 600, 450);
   if (_pGame == NULL)
@@ -67,6 +68,7 @@ void GameStart(HWND hWindow)
   _pGame-> _invisivbleEdgeBitmap = new CustomBitmap(hDC, IDB_INVISIBLEEDGE, _hInstance);
   _pGame->_greenEnemyBitmap = new CustomBitmap(hDC, IDB_BLOBBO, _hInstance);
   _pGame->_chaserEnemyBitmap = new CustomBitmap(hDC, IDB_JELLY, _hInstance);
+  _pGame->_stalkerEnemyBitmap = new CustomBitmap(hDC, IDB_TIMMY, _hInstance);
 
   // Create the starry background
   _pBackground = new StarryBackground(600, 450);
@@ -368,10 +370,15 @@ void HandleJoystick(JOYSTATE jsJoystickState)
 
 BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 {
+    
+
+
+
     CustomBitmap* _groundBitmap = GameEngine::GetEngine()->_eggBitmap;
     CustomBitmap* _ladderBitmap = GameEngine::GetEngine()->_ladderBitmap;
     CustomBitmap* _invisivbleEdgeBitmap = GameEngine::GetEngine()->_invisivbleEdgeBitmap;
     CustomBitmap* _greenEnemyBitmap = GameEngine::GetEngine()->_greenEnemyBitmap;
+    CustomBitmap* _stalkerEnemyBitmap = GameEngine::GetEngine()->_stalkerEnemyBitmap;
 
   // See if a player missile and an alien have collided
     CustomBitmap* pHitter = pSpriteHitter->GetBitmap();
@@ -385,7 +392,37 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
     if (pHittee == _invisivbleEdgeBitmap && (pHitter == _greenEnemyBitmap)) {
         pSpriteHitter->SetVelocity(-pSpriteHitter->GetVelocity().x, 0);
     }
-    
+    if ((pHitter == _invisivbleEdgeBitmap && (pHittee == _stalkerEnemyBitmap))) {
+        RECT rcPlayer = _pCarSprite->GetPosition();
+        RECT rcAlien = pSpriteHittee->GetPosition();
+        RECT rcinvisibleEdge = pSpriteHitter->GetPosition();
+        // Merkezden merkeze uzaklığı hesapla
+        int dx = (rcPlayer.left + _pCarSprite->GetWidth() / 2) - (rcAlien.left + pSpriteHittee->GetWidth() / 2);
+        int dx1 = (rcinvisibleEdge.left + pSpriteHitter->GetWidth() / 2) - (rcAlien.left + pSpriteHittee->GetWidth() / 2);
+        if (dx * dx1 >= 0)
+        {
+            // dx ve dy aynı işarete sahip (veya en az biri sıfır).
+            // Örneğin, her ikisi de kuzeydoğu veya güneybatı yönüne gidiyor.
+            pSpriteHittee->SetVelocity(0, 0);
+        }
+        
+
+        
+    }
+    if (pHittee == _invisivbleEdgeBitmap && (pHitter == _stalkerEnemyBitmap)) {
+        RECT rcPlayer = _pCarSprite->GetPosition();
+        RECT rcAlien = pSpriteHitter->GetPosition();
+        RECT rcinvisibleEdge = pSpriteHittee->GetPosition();
+        // Merkezden merkeze uzaklığı hesapla
+        int dx = (rcPlayer.left + _pCarSprite->GetWidth() / 2) - (rcAlien.left + pSpriteHitter->GetWidth() / 2);
+        int dx1 = (rcinvisibleEdge.left + pSpriteHittee->GetWidth() / 2) - (rcAlien.left + pSpriteHitter->GetWidth() / 2);
+        if (dx * dx1 >= 0)
+        {
+            // dx ve dy aynı işarete sahip (veya en az biri sıfır).
+            // Örneğin, her ikisi de kuzeydoğu veya güneybatı yönüne gidiyor.
+            pSpriteHitter->SetVelocity(0, 0);
+        }
+    }
 
   if ((pHitter == _pMissileBitmap && (pHittee == _pBlobboBitmap ||
     pHittee == _pJellyBitmap || pHittee == _pTimmyBitmap)) ||

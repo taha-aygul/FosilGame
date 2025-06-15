@@ -18,6 +18,7 @@ CustomBitmap* GameEngine::_invisivbleEdgeBitmap = nullptr;
 CustomBitmap* GameEngine::_ladderBitmap = nullptr;
 CustomBitmap* GameEngine::_greenEnemyBitmap = nullptr;
 CustomBitmap* GameEngine::_chaserEnemyBitmap = nullptr;
+CustomBitmap* GameEngine::_stalkerEnemyBitmap = nullptr;
 
 //-----------------------------------------------------------------
 // Windows Functions
