@@ -84,7 +84,7 @@ void NewGame()
     // Create the car sprite
     RECT rcBounds = { 0, 0, 600, 450 };
     _pCarSprite = new PlayerSprite(_pCarBitmap, rcBounds, BA_WRAP);
-    _pCarSprite->SetPosition(400, 250);
+    _pCarSprite->SetPosition(10, 10);
     _pGame->AddSprite(_pCarSprite);
 
 	Sprite* denemeSprite = new Sprite(denemeBitmap, rcBounds, BA_WRAP);
@@ -220,9 +220,9 @@ void HandleKeys()
     // Move the car based upon left/right key presses
     POINT ptVelocity = _pCarSprite->GetVelocity();
 
-    //  DAMPING EKLENDÝ
-    const float dampingFactor = 0.90f;
-	const float maxSpeed = 10.0f;
+    //  DAMPING EKLENDï¿½
+    const float dampingFactor = 0.85f;   // daha Ã§ok yavaÅŸlatÄ±r
+    const float maxSpeed = 4.0f;         // daha dÃ¼ÅŸÃ¼k hÄ±z
 
     if (GetAsyncKeyState(VK_LEFT) < 0)
     {
@@ -237,8 +237,13 @@ void HandleKeys()
     {
         // Stop the car
         ptVelocity.x = static_cast<int>(ptVelocity.x * dampingFactor);
-        // Küçük hýzlarý sýfýra çek (sürünmesin)
+        // Kï¿½ï¿½ï¿½k hï¿½zlarï¿½ sï¿½fï¿½ra ï¿½ek (sï¿½rï¿½nmesin)
         if (abs(ptVelocity.x) < 1) ptVelocity.x = 0;
+    }
+      // --- ZÄ±plama (Space tuÅŸu ile) ---
+    if (GetAsyncKeyState(VK_SPACE) < 0)
+    {
+      _pCarSprite->HandleKeyDown(VK_SPACE);  // YerÃ§ekimine gÃ¶re zÄ±plama
     }
      
     if (GetAsyncKeyState(VK_UP) <0 && _pCarSprite -> isCollidingWithLadder)
