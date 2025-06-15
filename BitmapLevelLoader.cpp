@@ -166,17 +166,17 @@ void BitmapLevelLoader::CreateLadderTile(int pixelX, int pixelY, int tileSize)
     // Ladder için bir CustomBitmap kaynaðýnýz olmasý lazým. Örneðin:
     //    resource.h:  #define IDB_LADDER 2014
     //    SpaceOut.rc: IDB_LADDER BITMAP "res\\ladder.bmp"
+    RECT rcBounds = { 0, 0, 600, 450 };
+    Sprite* egg = new Sprite(GameEngine::GetEngine()->_ladderBitmap, rcBounds, BA_WRAP);
+
     
-   
-    CustomBitmap* pLadderBmp = new CustomBitmap(hDC, IDB_LADDER, hInstance);
-    Sprite* ladder = new Sprite(pLadderBmp);
 
     POINT pt;
     pt.x = (LONG)worldX;
     pt.y = (LONG)worldY;
-    ladder->SetPosition(pt);
+    egg->SetPosition(pt);
 
-    GameEngine::GetEngine()->AddSprite(ladder);
+    GameEngine::GetEngine()->AddSprite(egg);
 }
 
 // ---------------------------------------------------------
