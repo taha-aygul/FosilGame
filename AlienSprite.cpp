@@ -56,15 +56,15 @@ SPRITEACTION AlienSprite::Update()
     
     // Yatay hareket
     if (rcPlayer.left < rcAlien.left)
-      ptVelocity.x = -3;  // Sola hareket
+      ptVelocity.x = -1;  // Sola hareket
     else if (rcPlayer.left > rcAlien.left)
-      ptVelocity.x = 3;   // Sağa hareket
+      ptVelocity.x = 1;   // Sağa hareket
       
     // Dikey hareket
     if (rcPlayer.top < rcAlien.top)
-      ptVelocity.y = -3;  // Yukarı hareket
+      ptVelocity.y = -1;  // Yukarı hareket
     else if (rcPlayer.top > rcAlien.top)
-      ptVelocity.y = 3;   // Aşağı hareket
+      ptVelocity.y = 1;   // Aşağı hareket
       
     SetVelocity(ptVelocity);
   }

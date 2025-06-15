@@ -79,6 +79,7 @@ public:
   static CustomBitmap* _invisivbleEdgeBitmap;
   static CustomBitmap* _ladderBitmap;
   static CustomBitmap* _greenEnemyBitmap;
+  static CustomBitmap* _chaserEnemyBitmap;
 
 public:
 

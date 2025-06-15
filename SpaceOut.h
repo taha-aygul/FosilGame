@@ -37,6 +37,7 @@ CustomBitmap*           _pTMissileBitmap;
 CustomBitmap*           _pSmExplosionBitmap;
 CustomBitmap*           _pLgExplosionBitmap;
 CustomBitmap*           _pGameOverBitmap;
+CustomBitmap*			_chaserEnemyBitmap;
 
 CustomBitmap* deneme2Bitmap;
 
