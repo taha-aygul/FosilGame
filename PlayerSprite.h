@@ -1,34 +1,36 @@
 #pragma once
 #include "Sprite.h"
 
-class PlayerSprite :
-    public Sprite
+class PlayerSprite : public Sprite
 {
 public:
     bool isCollidingWithLadder;
     bool isOnGround;
 
-
-
+private:
+    float velocityY;      // Dikey hÄ±z
+    float gravity;        // YerÃ§ekimi ivmesi
+    bool isJumping;       // ZÄ±plama kontrolÃ¼
 
 public:
-    // Constructor
+    // Constructor (basic)
     PlayerSprite(CustomBitmap* pBitmap)
-        : Sprite(pBitmap) {
-    }  // Base sýnýf constructor'ýný çaðýrýr
+        : Sprite(pBitmap), gravity(1.3f), velocityY(0.0f), isJumping(false), isOnGround(false) {} 
 
+    // Constructor with bounds
     PlayerSprite(CustomBitmap* pBitmap, RECT& rcBounds,
         BOUNDSACTION baBoundsAction = BA_STOP)
-        : Sprite(pBitmap, rcBounds, baBoundsAction) {
-    }
+        : Sprite(pBitmap, rcBounds, baBoundsAction), gravity(1.3f), velocityY(0.0f), isJumping(false), isOnGround(false) {}
 
+    // Full constructor
     PlayerSprite(CustomBitmap* pBitmap, POINT ptPosition, POINT ptVelocity, int iZOrder,
         RECT& rcBounds, BOUNDSACTION baBoundsAction = BA_STOP)
-        : Sprite(pBitmap, ptPosition, ptVelocity, iZOrder, rcBounds, baBoundsAction) {
-    }
+        : Sprite(pBitmap, ptPosition, ptVelocity, iZOrder, rcBounds, baBoundsAction),
+          gravity(1.3f), velocityY(0.0f), isJumping(false), isOnGround(false) {}
 
+    // Update fonksiyonu override
+    virtual SPRITEACTION Update() override;
 
-
-
+    // Space tuÅŸu gibi input'u iÅŸleyen fonksiyon
+    void HandleKeyDown(UINT key);
 };
-

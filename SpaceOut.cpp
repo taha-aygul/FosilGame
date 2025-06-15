@@ -221,8 +221,8 @@ void HandleKeys()
     POINT ptVelocity = _pCarSprite->GetVelocity();
 
     //  DAMPING EKLEND�
-    const float dampingFactor = 0.90f;
-	const float maxSpeed = 10.0f;
+    const float dampingFactor = 0.85f;   // daha çok yavaşlatır
+    const float maxSpeed = 4.0f;         // daha düşük hız
 
     if (GetAsyncKeyState(VK_LEFT) < 0)
     {
@@ -239,6 +239,11 @@ void HandleKeys()
         ptVelocity.x = static_cast<int>(ptVelocity.x * dampingFactor);
         // K���k h�zlar� s�f�ra �ek (s�r�nmesin)
         if (abs(ptVelocity.x) < 1) ptVelocity.x = 0;
+    }
+      // --- Zıplama (Space tuşu ile) ---
+    if (GetAsyncKeyState(VK_SPACE) < 0)
+    {
+      _pCarSprite->HandleKeyDown(VK_SPACE);  // Yerçekimine göre zıplama
     }
      
     if (GetAsyncKeyState(VK_UP) <0 && _pCarSprite -> isCollidingWithLadder)
