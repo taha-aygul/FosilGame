@@ -63,8 +63,6 @@ void GameStart(HWND hWindow)
 
   _pGame->_groundBitmap = new CustomBitmap(hDC, IDB_REDBLOCK, _hInstance);
   _pGame->_eggBitmap = new CustomBitmap(hDC, IDB_EGG, _hInstance);
-  _pGame->_invisivbleEdgeBitmap = new CustomBitmap(hDC, IDB_INVISIBLEEDGE, _hInstance);
-  _pGame->_ladderBitmap = new CustomBitmap(hDC, IDB_GREENBLOCK, _hInstance);
 
   // Create the starry background
   _pBackground = new StarryBackground(600, 450);
@@ -76,8 +74,15 @@ void GameStart(HWND hWindow)
   NewGame();
 }
 
+int _currentLevel = 1;
+const int _maxLevel = 3; // Set this to your total number of levels
+int _eggsCollected = 0;
+int _eggsInLevel = 0; // Number of eggs in the current level
+
 void NewGame()
 {
+    _currentLevel = 1;
+
     // Clear the sprites
     _pGame->CleanupSprites();
 
@@ -179,10 +184,55 @@ void GamePaint(HDC hDC)
     _pGameOverBitmap->Draw(hDC, 190, 149, TRUE);
 }
 
+void NextLevel()
+{
+    _currentLevel++;
+    if (_currentLevel > _maxLevel)
+    {
+        // Game completed, show game over or victory screen
+        _bGameOver = TRUE;
+        // Optionally: Show a "You Win" bitmap or message
+        return;
+    }
+
+    // Reset for new level
+    _eggsCollected = 0; 
+    _eggsInLevel = 0;
+
+    // Clear sprites and load the next level bitmap
+    _pGame->CleanupSprites();
+
+    // Example: Level bitmap resource IDs are sequential (IDB_LEVEL01, IDB_LEVEL02, ...)
+    int nextLevelResId = IDB_LEVEL01 + (_currentLevel - 1);
+
+    BitmapLevelLoader::GenerateLevelFromBitmap(nextLevelResId, 10);
+
+    // Re-create player sprite, reset variables, etc.
+    RECT rcBounds = { 0, 0, 600, 450 };
+    _pCarSprite = new PlayerSprite(_pCarBitmap, rcBounds, BA_WRAP);
+    _pCarSprite->SetPosition(10, 10);
+    _pGame->AddSprite(_pCarSprite);
+
+    // Reset or update other variables as needed
+}
+
+bool AllEggsCollected()
+{
+    return _eggsCollected >= _eggsInLevel;
+}
+
+    
+
 void GameCycle()
 {
   if (!_bGameOver)
   {
+          // Check for level completion (example: all eggs collected)
+    if (AllEggsCollected()) // Implement this function as needed
+    {
+      NextLevel();
+      return;
+    }
 
     // Randomly add aliens
     if ((rand() % _iDifficulty) == 0)
@@ -247,11 +297,11 @@ void HandleKeys()
      
     if (GetAsyncKeyState(VK_UP) <0 && _pCarSprite -> isCollidingWithLadder)
     {
-		_pCarSprite->velocityY = max(ptVelocity.y - 1, -maxSpeed); // Merdivende yukarı çıkma hızı
+		ptVelocity.y = max(ptVelocity.y - 1, -maxSpeed);
     }
     else if (GetAsyncKeyState(VK_DOWN) < 0 && _pCarSprite->isCollidingWithLadder)
     {
-		_pCarSprite->velocityY = min(ptVelocity.y + 1, maxSpeed); // Merdivende yukarı çıkma hızı
+		ptVelocity.y = min(ptVelocity.y + 2, maxSpeed);
     }
     else
 	{
@@ -262,8 +312,6 @@ void HandleKeys()
      
     _pCarSprite->SetVelocity(ptVelocity);
 
-
-    
 
     // Fire missiles based upon spacebar presses
     if ((++_iFireInputDelay > 6) && GetAsyncKeyState(VK_SPACE) < 0)
@@ -388,18 +436,12 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
   if (pHittee == _pCarBitmap) {
 
 
-     
-      if (pHitter == _pGame->_ladderBitmap)
-      {
-		  _pCarSprite->isCollidingWithLadder = true;
-      }
-
       if (pHitter == _pGame->_eggBitmap)
       {
           CollectEgg(pSpriteHitter);
       }
 
-      if (pHitter == _pGame->_groundBitmap && !_pCarSprite->isCollidingWithLadder)
+      if (pHitter == _pGame->_groundBitmap)
       {
           //_pCarSprite->isOnGround = true;
 
@@ -502,6 +544,8 @@ void CollectEgg(Sprite* pEgg)
 	_iScore += 1;
 	_iDifficulty = max(80 - (_iScore / 20), 20);
 
+    _eggsCollected++; // Increment collected eggs
+
     RECT rcBounds = { 0, 0, 600, 450 };
     RECT rcPos;
         rcPos = pEgg->GetPosition();
@@ -510,3 +554,4 @@ void CollectEgg(Sprite* pEgg)
     pSprite->SetPosition(rcPos.left, rcPos.top);
     _pGame->AddSprite(pSprite);
 }
+
