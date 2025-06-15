@@ -23,19 +23,11 @@ SPRITEACTION PlayerSprite::Update()
 	}
 	
     else {
-        velocityY = gravity;
+        velocityY += gravity;
+		velocityY = min(velocityY, 5.0f); // Maksimum düşme hızı
     }
-   /* if (pos.bottom >= 400)
-    {
-        SetPosition(pos.left, 400 - GetHeight());
-        velocityY = 0;
-        isJumping = false;
-        isOnGround = true;
-    }
-    else
-    {
-       // isOnGround = false;
-    }*/
+ 
+    isOnGround = false;
 
     return sa;
 }
