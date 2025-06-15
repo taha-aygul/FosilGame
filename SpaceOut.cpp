@@ -385,17 +385,39 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
   }
 
 
-
   if (pHittee == _pCarBitmap) {
+
 
       if (pHitter == _pGame->_groundBitmap)
       {
-          _pCarSprite->isOnGround = true;
+          //_pCarSprite->isOnGround = true;
 
-      }
-      else {   /// AMINA KODUMUN KODUNDA ÇARPIŞMA ALGILANIYO AMA ÇARPIŞMADAN ÇIKTIĞINI ALGILAYAMIYORUZ
-          
+          RECT rcPlayer = _pCarSprite->GetPosition();
+          RECT rcGround = pSpriteHitter->GetPosition();
+          POINT ptVelocity = _pCarSprite->GetVelocity();
 
+          // Use a small tolerance value. This allows the check to succeed even if
+          // the player has slightly passed through the ground's surface due to its velocity.
+          const int tolerance = 10;
+
+          // Check two conditions:
+          // 1. The player is moving downwards (or is stationary vertically). This prevents
+          //    the check from triggering while jumping up through a platform from below.
+          // 2. The player's bottom edge is at or slightly below the ground's top edge.
+          if (ptVelocity.y >= 0 
+              && rcPlayer.bottom <= rcGround.top + tolerance
+              && rcPlayer.bottom >= rcGround.top - tolerance
+            )
+          {
+              // Set the flag to indicate the player is on the ground.
+              // You can now use this flag in your player control logic (e.g., to allow jumping).
+              _pCarSprite->isOnGround = true;
+
+              // To prevent the player from sinking into the ground, it's good practice
+              // to "snap" their position so they sit exactly on top of the ground.
+             _pCarSprite->SetPosition(rcPlayer.left, rcGround.top - _pCarSprite->GetHeight()+4);
+
+          }
       }
   }
  
