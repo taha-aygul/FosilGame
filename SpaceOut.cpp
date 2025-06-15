@@ -358,9 +358,26 @@ void HandleJoystick(JOYSTATE jsJoystickState)
 
 BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 {
+    CustomBitmap* _groundBitmap = GameEngine::GetEngine()->_eggBitmap;
+    CustomBitmap* _ladderBitmap = GameEngine::GetEngine()->_ladderBitmap;
+    CustomBitmap* _invisivbleEdgeBitmap = GameEngine::GetEngine()->_invisivbleEdgeBitmap;
+
   // See if a player missile and an alien have collided
     CustomBitmap* pHitter = pSpriteHitter->GetBitmap();
     CustomBitmap* pHittee = pSpriteHittee->GetBitmap();
+
+    
+
+    if ((pHitter == _invisivbleEdgeBitmap && (pHittee == _pJellyBitmap || pHittee == _pBlobboBitmap ||
+        pHittee == _pTimmyBitmap))) {
+        pSpriteHittee->SetVelocity(-pSpriteHittee->GetVelocity().x, 0);
+    }
+    if (pHittee == _invisivbleEdgeBitmap && (pHitter == _pJellyBitmap || pHitter == _pBlobboBitmap ||
+        pHitter == _pTimmyBitmap)) {
+        pSpriteHitter->SetVelocity(-pSpriteHitter->GetVelocity().x, 0);
+    }
+    
+
   if ((pHitter == _pMissileBitmap && (pHittee == _pBlobboBitmap ||
     pHittee == _pJellyBitmap || pHittee == _pTimmyBitmap)) ||
     (pHittee == _pMissileBitmap && (pHitter == _pBlobboBitmap ||
