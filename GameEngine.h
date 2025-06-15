@@ -76,6 +76,8 @@ protected:
 public:
   static CustomBitmap* _groundBitmap;
   static CustomBitmap* _eggBitmap;
+  static CustomBitmap* _invisivbleEdgeBitmap;
+  static CustomBitmap* _ladderBitmap;
 
 public:
 

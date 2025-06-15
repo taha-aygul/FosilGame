@@ -103,6 +103,9 @@ void BitmapLevelLoader::GenerateLevelFromBitmap(int levelResourceID, int tileSiz
             else if (r == 255 && g == 255 && b == 0) {
 				CreateEgg((int)x, (int)y, tileSize);
             }
+            else if (r == 0 && g == 255 && b == 255) {
+                CreateInvisibleEdge((int)x, (int)y, tileSize);
+            }
             else
             {
                 // Siyah veya baþka renkler: Boþ (hiçbir þey yapma)
@@ -166,8 +169,9 @@ void BitmapLevelLoader::CreateLadderTile(int pixelX, int pixelY, int tileSize)
     //    SpaceOut.rc: IDB_LADDER BITMAP "res\\ladder.bmp"
     
    
-    CustomBitmap* pLadderBmp = new CustomBitmap(hDC, IDB_LADDER, hInstance);
-    Sprite* ladder = new Sprite(pLadderBmp);
+    RECT rcBounds = { 0, 0, 600, 450 };
+
+    Sprite* ladder = new Sprite(GameEngine::GetEngine()->_ladderBitmap, rcBounds, BA_WRAP);
 
     POINT pt;
     pt.x = (LONG)worldX;
@@ -231,6 +235,23 @@ void BitmapLevelLoader::CreateEgg(int pixelX, int pixelY, int tileSize)
 
     RECT rcBounds = { 0, 0, 600, 450 };
     Sprite* egg = new Sprite(GameEngine::GetEngine()->_eggBitmap, rcBounds, BA_WRAP);
+
+    POINT pt;
+    pt.x = (LONG)worldX;
+    pt.y = (LONG)worldY;
+    egg->SetPosition(pt);
+
+    // 4) Engine’e ekle
+    GameEngine::GetEngine()->AddSprite(egg);
+}
+
+void BitmapLevelLoader::CreateInvisibleEdge(int pixelX, int pixelY, int tileSize)
+{
+    float worldX = (float)(pixelX * tileSize);
+    float worldY = (float)(pixelY * tileSize);
+
+    RECT rcBounds = { 0, 0, 600, 450 };
+    Sprite* egg = new Sprite(GameEngine::GetEngine()->_invisivbleEdgeBitmap, rcBounds, BA_WRAP);
 
     POINT pt;
     pt.x = (LONG)worldX;

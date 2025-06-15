@@ -116,6 +116,10 @@
     <ClInclude Include="Sprite.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="bitmap1.bmp" />
+    <Image Include="_egg.bmp" />
+    <Image Include="_greenBlock.bmp" />
+    <Image Include="_invisibleEdge.bmp" />
     <Image Include="_redBlock.bmp" />
     <Image Include="_Level01.bmp" />
     <Image Include="_ladder.bmp" />
