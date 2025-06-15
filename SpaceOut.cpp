@@ -510,21 +510,24 @@ void AddAlien()
   // Create a new random alien sprite
   RECT          rcBounds = { 0, 0, 600, 410 };
   AlienSprite*  pSprite;
-  switch(rand() % 3)
+  
+  // Rastgele alien türü seç (3 tür artık)
+  switch(rand() % 3)  
   {
   case 0:
-    // Blobbo
+    // Blobbo 
     pSprite = new AlienSprite(_pBlobboBitmap, rcBounds, BA_BOUNCE);
-    pSprite->SetNumFrames(8);
-    pSprite->SetPosition(((rand() % 2) == 0) ? 0 : 600, rand() % 370);
-    pSprite->SetVelocity((rand() % 7) - 2, (rand() % 7) - 2);
-    break;
-  case 1:
-    // Jelly
-    pSprite = new AlienSprite(_pJellyBitmap, rcBounds, BA_BOUNCE);
     pSprite->SetNumFrames(8);
     pSprite->SetPosition(rand() % 600, rand() % 370);
     pSprite->SetVelocity((rand() % 5) - 2, (rand() % 5) + 3);
+    break;
+  case 1:
+    // Chaser (Takipçi) - Jelly bitmap'ini kullanıyoruz
+    pSprite = new AlienSprite(_pJellyBitmap, rcBounds, BA_BOUNCE);
+    pSprite->SetNumFrames(8);
+    pSprite->SetPosition(rand() % 600, rand() % 370);
+    pSprite->SetVelocity(0, 0);  // Başlangıç hızı 0
+    pSprite->SetChaser(true);    // Takipçi olarak işaretle
     break;
   case 2:
     // Timmy

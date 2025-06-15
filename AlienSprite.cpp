@@ -7,6 +7,7 @@
 // Include Files
 //-----------------------------------------------------------------
 #include "AlienSprite.h"
+#include "PlayerSprite.h"
 
 //-----------------------------------------------------------------
 // External Global Variables
@@ -18,6 +19,7 @@ extern CustomBitmap* _pJMissileBitmap;
 extern CustomBitmap* _pTimmyBitmap;
 extern CustomBitmap* _pTMissileBitmap;
 extern int     _iDifficulty;
+extern PlayerSprite* _pCarSprite;
 
 //-----------------------------------------------------------------
 // AlienSprite Constructor(s)/Destructor
@@ -26,6 +28,7 @@ AlienSprite::AlienSprite(CustomBitmap* pBitmap, RECT& rcBounds,
   BOUNDSACTION baBoundsAction) : Sprite(pBitmap, rcBounds,
   baBoundsAction)
 {
+  isChaser = false;  // Varsayılan olarak takipçi değil
 }
 
 AlienSprite::~AlienSprite()
@@ -40,6 +43,31 @@ SPRITEACTION AlienSprite::Update()
   // Call the base sprite Update() method
   SPRITEACTION saSpriteAction;
   saSpriteAction = Sprite::Update();
+
+  // Eğer bu bir takipçi alien ise
+  if (isChaser && _pCarSprite != NULL)
+  {
+    // Oyuncunun pozisyonunu al
+    RECT rcPlayer = _pCarSprite->GetPosition();
+    RECT rcAlien = GetPosition();
+    
+    // Oyuncuya doğru hareket et
+    POINT ptVelocity = GetVelocity();
+    
+    // Yatay hareket
+    if (rcPlayer.left < rcAlien.left)
+      ptVelocity.x = -3;  // Sola hareket
+    else if (rcPlayer.left > rcAlien.left)
+      ptVelocity.x = 3;   // Sağa hareket
+      
+    // Dikey hareket
+    if (rcPlayer.top < rcAlien.top)
+      ptVelocity.y = -3;  // Yukarı hareket
+    else if (rcPlayer.top > rcAlien.top)
+      ptVelocity.y = 3;   // Aşağı hareket
+      
+    SetVelocity(ptVelocity);
+  }
 
   // See if the alien should fire a missile
   if ((rand() % (_iDifficulty / 2)) == 0)

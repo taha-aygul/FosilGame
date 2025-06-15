@@ -25,4 +25,8 @@ public:
   // General Methods
   virtual SPRITEACTION  Update();
   virtual Sprite*       AddSprite();
+
+  // Yeni özellikler
+  bool isChaser;  // Bu alien'ın takipçi olup olmadığını belirten flag
+  void SetChaser(bool value) { isChaser = value; }
 };
