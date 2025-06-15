@@ -136,7 +136,12 @@ void GameEnd()
   delete _pSmExplosionBitmap;
   delete _pLgExplosionBitmap;
   delete _pGameOverBitmap;
-
+  delete _pGame->_groundBitmap;
+  delete _pGame->_eggBitmap;
+  delete _pGame->_invisivbleEdgeBitmap;
+  delete _pGame->_ladderBitmap;
+  delete _pGame->_greenEnemyBitmap;
+  delete _pGame->_chaserEnemyBitmap;
   // Cleanup the background
   delete _pBackground;
 
@@ -205,8 +210,13 @@ void NextLevel()
         return;
     }
 
+    LoadCurrentLevel();
+
+    // Reset or update other variables as needed
+}
+void LoadCurrentLevel() {
     // Reset for new level
-    _eggsCollected = 0; 
+    _eggsCollected = 0;
     _eggsInLevel = 0;
 
     // Clear sprites and load the next level bitmap
@@ -222,9 +232,9 @@ void NextLevel()
     _pCarSprite = new PlayerSprite(_pCarBitmap, rcBounds, BA_WRAP);
     _pCarSprite->SetPosition(10, 10);
     _pGame->AddSprite(_pCarSprite);
-
-    // Reset or update other variables as needed
 }
+
+
 
 bool AllEggsCollected()
 {
@@ -324,24 +334,7 @@ void HandleKeys()
     _pCarSprite->SetVelocity(ptVelocity);
 
 
-    // Fire missiles based upon spacebar presses
-    if ((++_iFireInputDelay > 6) && GetAsyncKeyState(VK_SPACE) < 0)
-    {
-      // Create a new missile sprite
-      RECT  rcBounds = { 0, 0, 600, 450 };
-      RECT  rcPos = _pCarSprite->GetPosition();
-      Sprite* pSprite = new Sprite(_pMissileBitmap, rcBounds, BA_DIE);
-      pSprite->SetPosition(rcPos.left + 15, rcPos.top);
-      pSprite->SetVelocity(0, -7);
-      _pGame->AddSprite(pSprite);
-
-      // Play the missile (fire) sound
-      PlaySound((LPCSTR)IDW_MISSILE, _hInstance, SND_ASYNC |
-        SND_RESOURCE | SND_NOSTOP);
-
-      // Reset the input delay
-      _iFireInputDelay = 0;
-    }
+   
   }
 
   // Start a new game based upon an Enter (Return) key press
@@ -458,9 +451,22 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
     }
   }
 
- 
+  if (pHitter == _pCarBitmap) {
+
+
+      if (pHittee == _pGame->_greenEnemyBitmap || pHittee == _pGame->_chaserEnemyBitmap)
+      {
+          LoadCurrentLevel();
+      }
+  }
 
   if (pHittee == _pCarBitmap) {
+
+
+      if (pHitter == _pGame->_greenEnemyBitmap || pHitter == _pGame->_chaserEnemyBitmap)
+      {
+          LoadCurrentLevel();
+      }
 
 
       if (pHitter == _pGame->_ladderBitmap)

@@ -53,3 +53,4 @@ BOOL              _bGameOver;
 void NewGame();
 void AddAlien();
 void CollectEgg(Sprite* pEgg);
+void LoadCurrentLevel();
