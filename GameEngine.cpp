@@ -361,8 +361,10 @@ void GameEngine::UpdateSprites()
   // Update the sprites in the sprite vector
   RECT          rcOldSpritePos;
   SPRITEACTION  saSpriteAction;
+  vector<Sprite*> addList, deleteList;
   vector<Sprite*>::iterator siSprite;
-  for (siSprite = m_vSprites.begin(); siSprite != m_vSprites.end(); /* siSprite++ */)
+
+  for (siSprite = m_vSprites.begin(); siSprite != m_vSprites.end(); )
   {
     // Save the old sprite position in case we need to restore it
     rcOldSpritePos = (*siSprite)->GetPosition();
@@ -370,30 +372,39 @@ void GameEngine::UpdateSprites()
     // Update the sprite
     saSpriteAction = (*siSprite)->Update();
 
-    // Handle the SA_ADDSPRITE sprite action
-    if (saSpriteAction & SA_ADDSPRITE)
-      // Allow the sprite to add its sprite
-      AddSprite((*siSprite)->AddSprite());
-
-    // Handle the SA_KILL sprite action
+    // if SA_KILL, remove from m_vSprites then continue
     if (saSpriteAction & SA_KILL)
     {
-      // Notify the game that the sprite is dying
-      SpriteDying(*siSprite);
-
-      // Kill the sprite
-      delete (*siSprite);
-      siSprite=m_vSprites.erase(siSprite);
-      //siSprite--;
-      continue;
+        deleteList.push_back(*siSprite);
+        siSprite = m_vSprites.erase(siSprite);
+        continue;
     }
+    
+    else
+    {
+        // See if the sprite collided with any others
+        if (CheckSpriteCollision(*siSprite))
+            (*siSprite)->SetPosition(rcOldSpritePos);  // Restore the old sprite position
 
-    // See if the sprite collided with any others
-    if (CheckSpriteCollision(*siSprite))
-      (*siSprite)->SetPosition(rcOldSpritePos);  // Restore the old sprite position
-
+        // Handle the SA_ADDSPRITE sprite action
+        // Allow the sprite to add its sprite
+        if (saSpriteAction & SA_ADDSPRITE)
+            addList.push_back(*siSprite);
+    }
+    
     siSprite++;
   }
+
+  for(Sprite* sp : addList)
+      AddSprite(sp->AddSprite());
+  
+  for (Sprite* sp : deleteList)
+  {
+      // Creates explosion / transient sprites
+      SpriteDying(sp);
+      delete(sp);
+  }
+
 }
 
 void GameEngine::CleanupSprites()
