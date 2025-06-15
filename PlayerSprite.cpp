@@ -43,7 +43,7 @@ SPRITEACTION PlayerSprite::Update()
 
 void PlayerSprite::HandleKeyDown(UINT key)
 {
-    if (key == VK_SPACE && isOnGround)
+    if (key == VK_SPACE && (isOnGround|| isCollidingWithLadder))
     {
         velocityY = -12.0f;   // zıplama gücü
         isJumping = true;
