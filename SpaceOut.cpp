@@ -160,31 +160,37 @@ void GameDeactivate(HWND hWindow)
 
 void GamePaint(HDC hDC)
 {
-  // Draw the background
-  _pBackground->Draw(hDC);
+    // Draw the background
+    _pBackground->Draw(hDC);
 
-  // Draw the desert bitmap
-  _pDesertBitmap->Draw(hDC, 0, 371);
+    // Draw the desert bitmap
+    _pDesertBitmap->Draw(hDC, 0, 371);
 
-  // Draw the sprites
-  _pGame->DrawSprites(hDC);
+    // Draw the sprites
+    _pGame->DrawSprites(hDC);
 
-  // Draw the score
-  TCHAR szText[64];
-  RECT  rect = { 460, 0, 510, 30 };
-  wsprintf(szText, "%d", _iScore);
-  SetBkMode(hDC, TRANSPARENT);
-  SetTextColor(hDC, RGB(255, 255, 255));
-  DrawText(hDC, szText, -1, &rect, DT_SINGLELINE | DT_RIGHT | DT_VCENTER);
+    // Draw the egg icon next to the eggs collected/total text
+    int eggIconX = 10;
+    int eggIconY = 10;
+    int eggIconWidth = _pGame->_eggBitmap->GetWidth();
+    int eggIconHeight = _pGame->_eggBitmap->GetHeight();
+    _pGame->_eggBitmap->Draw(hDC, eggIconX, eggIconY, TRUE);
 
-  // Draw the number of remaining lives (cars)
-  for (int i = 0; i < _iNumLives; i++)
-    _pSmCarBitmap->Draw(hDC, 520 + (_pSmCarBitmap->GetWidth() * i),
-      10, TRUE);
+    // Draw the eggs collected / total eggs text next to the icon
+    TCHAR szEggs[64];
+    RECT rectEggs = { eggIconX + eggIconWidth + 8, eggIconY, eggIconX + eggIconWidth + 120, eggIconY + eggIconHeight };
+    wsprintf(szEggs, "%d / %d", _eggsCollected, _eggsInLevel);
+    SetBkMode(hDC, TRANSPARENT);
+    SetTextColor(hDC, RGB(255, 255, 255));
+    DrawText(hDC, szEggs, -1, &rectEggs, DT_SINGLELINE | DT_LEFT | DT_VCENTER);
 
-  // Draw the game over message, if necessary
-  if (_bGameOver)
-    _pGameOverBitmap->Draw(hDC, 190, 149, TRUE);
+    // Draw the number of remaining lives (cars)
+    // for (int i = 0; i < _iNumLives; i++)
+    //   _pSmCarBitmap->Draw(hDC, 520 + (_pSmCarBitmap->GetWidth() * i), 10, TRUE);
+
+    // Draw the game over message, if necessary
+    if (_bGameOver)
+        _pGameOverBitmap->Draw(hDC, 190, 149, TRUE);
 }
 
 void NextLevel()
@@ -297,21 +303,22 @@ void HandleKeys()
     {
       _pCarSprite->HandleKeyDown(VK_SPACE);  // Yerçekimine göre zıplama
     }
-     
-    if (GetAsyncKeyState(VK_UP) <0 && _pCarSprite -> isCollidingWithLadder)
+  
+
+    if (GetAsyncKeyState(VK_UP) < 0 && _pCarSprite->isCollidingWithLadder)
     {
-		ptVelocity.y = max(ptVelocity.y - 1, -maxSpeed);
+        _pCarSprite->velocityY = max(ptVelocity.y - 1, -maxSpeed); // Merdivende yukarı çıkma hızı
     }
     else if (GetAsyncKeyState(VK_DOWN) < 0 && _pCarSprite->isCollidingWithLadder)
     {
-		ptVelocity.y = min(ptVelocity.y + 2, maxSpeed);
+        _pCarSprite->velocityY = min(ptVelocity.y + 1, maxSpeed); // Merdivende yukarı çıkma hızı
     }
     else
-	{
-		// Stop the car
+    {
+        // Stop the car
         ptVelocity.y = static_cast<int>(ptVelocity.y * dampingFactor);
         if (abs(ptVelocity.y) < 1) ptVelocity.y = 0;
-	}
+    }
      
     _pCarSprite->SetVelocity(ptVelocity);
 
@@ -455,6 +462,11 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
   if (pHittee == _pCarBitmap) {
 
 
+      if (pHitter == _pGame->_ladderBitmap)
+      {
+          _pCarSprite->isCollidingWithLadder = true;
+      }
+
       if (pHitter == _pGame->_eggBitmap)
       {
           CollectEgg(pSpriteHitter);
@@ -476,18 +488,21 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
           // 1. The player is moving downwards (or is stationary vertically). This prevents
           //    the check from triggering while jumping up through a platform from below.
           // 2. The player's bottom edge is at or slightly below the ground's top edge.
-          if (ptVelocity.y >= 0 
+          if (ptVelocity.y >= 0
               && rcPlayer.bottom <= rcGround.top + tolerance
               && rcPlayer.bottom >= rcGround.top - tolerance
-            )
+              )
           {
               // Set the flag to indicate the player is on the ground.
               // You can now use this flag in your player control logic (e.g., to allow jumping).
-              _pCarSprite->isOnGround = true;
+              _pCarSprite->isOnGround = true; if (pHitter == _pGame->_ladderBitmap)
+              {
+                  _pCarSprite->isCollidingWithLadder = true;
+              }
 
               // To prevent the player from sinking into the ground, it's good practice
               // to "snap" their position so they sit exactly on top of the ground.
-             _pCarSprite->SetPosition(rcPlayer.left, rcGround.top - _pCarSprite->GetHeight()+4);
+              _pCarSprite->SetPosition(rcPlayer.left, rcGround.top - _pCarSprite->GetHeight() + 4);
 
           }
       }
