@@ -35,7 +35,7 @@ IDB_LADDER            BITMAP       "_ladder.bmp"
 IDB_REDBLOCK          BITMAP       "_redBlock.bmp"
 IDB_GREENBLOCK          BITMAP       "_greenBlock.bmp"
 IDB_LEVEL01			  BITMAP       "_Level01.bmp"
-
+IDB_LEVEL02			  BITMAP       "_Level02.bmp"
 IDB_EGG               BITMAP       "_egg.bmp"
 IDB_INVISIBLEEDGE               BITMAP       "_invisibleEdge.bmp"
 //-----------------------------------------------------------------
