@@ -100,6 +100,9 @@ void BitmapLevelLoader::GenerateLevelFromBitmap(int levelResourceID, int tileSiz
                 // Mavi: Enemy
                 CreateEnemyAt((int)x, (int)y, tileSize);
             }
+            else if (r == 255 && g == 255 && b == 0) {
+				CreateEgg((int)x, (int)y, tileSize);
+            }
             else
             {
                 // Siyah veya baþka renkler: Boþ (hiçbir þey yapma)
@@ -131,10 +134,11 @@ void BitmapLevelLoader::CreateGroundTile(int pixelX, int pixelY, int tileSize)
     //    SpaceOut.rc: IDB_GROUND BITMAP "res\\ground.bmp"
     // Burada, GroundSprite adýnda yeni bir sýnýf yoksa, Sprite sýnýfýný da kullanabilirsiniz:
     //
-    CustomBitmap* pGroundBmp = new CustomBitmap(hDC, IDB_REDBLOCK, hInstance);
-  
+    
+    CustomBitmap* pGroundBmp = GameEngine::GetEngine()->_groundBitmap;     // new CustomBitmap(hDC, IDB_REDBLOCK, hInstance);
+
     RECT rcBounds = { 0, 0, 600, 450 };
-    Sprite* ground = new Sprite(GameEngine::GetEngine()->_groundBitmap,rcBounds,BA_WRAP);
+    Sprite* ground = new Sprite(pGroundBmp,rcBounds,BA_WRAP);
 
     // 3) Sprite’ýn pozisyonunu ayarla:
     POINT pt;
@@ -160,7 +164,6 @@ void BitmapLevelLoader::CreateLadderTile(int pixelX, int pixelY, int tileSize)
     // Ladder için bir CustomBitmap kaynaðýnýz olmasý lazým. Örneðin:
     //    resource.h:  #define IDB_LADDER 2014
     //    SpaceOut.rc: IDB_LADDER BITMAP "res\\ladder.bmp"
-    //
     
    
     CustomBitmap* pLadderBmp = new CustomBitmap(hDC, IDB_LADDER, hInstance);
@@ -219,3 +222,23 @@ static void CreateTile(UINT uiResID, int pixelX, int pixelY, int tileSize, HDC h
     GameEngine::GetEngine()->AddSprite(enemy);
 
 }
+
+
+void BitmapLevelLoader::CreateEgg(int pixelX, int pixelY, int tileSize)
+{
+    float worldX = (float)(pixelX * tileSize);
+    float worldY = (float)(pixelY * tileSize);
+
+    RECT rcBounds = { 0, 0, 600, 450 };
+    Sprite* egg = new Sprite(GameEngine::GetEngine()->_eggBitmap, rcBounds, BA_WRAP);
+
+    POINT pt;
+    pt.x = (LONG)worldX;
+    pt.y = (LONG)worldY;
+    egg->SetPosition(pt);
+
+    // 4) Engine’e ekle
+    GameEngine::GetEngine()->AddSprite(egg);
+}
+
+

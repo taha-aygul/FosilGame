@@ -75,6 +75,7 @@ protected:
   BOOL                CheckSpriteCollision(Sprite* pTestSprite);
 public:
   static CustomBitmap* _groundBitmap;
+  static CustomBitmap* _eggBitmap;
 
 public:
 

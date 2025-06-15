@@ -95,13 +95,13 @@ void StarryBackground::Update()
 
 void StarryBackground::Draw(HDC hDC)
 {
-  // Draw the solid black background
-  RECT    rect = { 0, 0, m_iWidth, m_iHeight };
-  HBRUSH  hBrush = CreateSolidBrush(RGB(0, 0, 0));
-  FillRect(hDC, &rect, hBrush);
-  DeleteObject(hBrush);
+    // Draw the solid black background
+    RECT    rect = { 0, 0, m_iWidth, m_iHeight };
+    HBRUSH  hBrush = CreateSolidBrush(RGB(99, 213, 251));
+    FillRect(hDC, &rect, hBrush);
+    DeleteObject(hBrush);
 
-  // Draw the stars
-  for (int i = 0; i < m_iNumStars; i++)
-    SetPixel(hDC, m_ptStars[i].x, m_ptStars[i].y, m_crStarColors[i]);
+    // Draw the stars
+    for (int i = 0; i < m_iNumStars; i++)
+        SetPixel(hDC, m_ptStars[i].x, m_ptStars[i].y, m_crStarColors[i]);
 }

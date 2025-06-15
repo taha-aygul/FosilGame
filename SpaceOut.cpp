@@ -62,6 +62,7 @@ void GameStart(HWND hWindow)
   _pGameOverBitmap = new CustomBitmap(hDC, IDB_GAMEOVER, _hInstance);
 
   _pGame->_groundBitmap = new CustomBitmap(hDC, IDB_REDBLOCK, _hInstance);
+  _pGame->_eggBitmap = new CustomBitmap(hDC, IDB_EGG, _hInstance);
 
   // Create the starry background
   _pBackground = new StarryBackground(600, 450);
@@ -384,9 +385,15 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
     }
   }
 
+ 
 
   if (pHittee == _pCarBitmap) {
 
+
+      if (pHitter == _pGame->_eggBitmap)
+      {
+          CollectEgg(pSpriteHitter);
+      }
 
       if (pHitter == _pGame->_groundBitmap)
       {
@@ -483,4 +490,19 @@ void AddAlien()
 
   // Add the alien sprite
   _pGame->AddSprite(pSprite);
+}
+
+void CollectEgg(Sprite* pEgg)
+{
+	pEgg->Kill();
+	_iScore += 1;
+	_iDifficulty = max(80 - (_iScore / 20), 20);
+
+    RECT rcBounds = { 0, 0, 600, 450 };
+    RECT rcPos;
+        rcPos = pEgg->GetPosition();
+    Sprite* pSprite = new Sprite(_pLgExplosionBitmap, rcBounds);
+    pSprite->SetNumFrames(8, TRUE);
+    pSprite->SetPosition(rcPos.left, rcPos.top);
+    _pGame->AddSprite(pSprite);
 }

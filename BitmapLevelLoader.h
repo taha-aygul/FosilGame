@@ -54,6 +54,7 @@
         /// Renk koduna göre enemy (düþman) nesnesi oluþturur.
         /// </summary>
         static void CreateEnemyAt(int pixelX, int pixelY, int tileSize);
+        static void CreateEgg(int pixelX, int pixelY, int tileSize);
 
         // Eðer ihtiyacýnýz varsa baþka tile türleri de ekleyin:
         // static void CreateWallTile(int pixelX, int pixelY, int tileSize);

@@ -13,6 +13,7 @@
 //-----------------------------------------------------------------
 GameEngine *GameEngine::m_pGameEngine = NULL;
 CustomBitmap* GameEngine::_groundBitmap = nullptr;
+CustomBitmap* GameEngine::_eggBitmap = nullptr;
 
 //-----------------------------------------------------------------
 // Windows Functions

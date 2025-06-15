@@ -35,6 +35,7 @@ IDB_LADDER            BITMAP       "_ladder.bmp"
 IDB_REDBLOCK          BITMAP       "_redBlock.bmp"
 IDB_LEVEL01			  BITMAP       "_Level01.bmp"
 
+IDB_EGG               BITMAP       "_egg.bmp"
 //-----------------------------------------------------------------
 // Wave Sounds
 //-----------------------------------------------------------------
