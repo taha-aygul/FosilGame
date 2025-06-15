@@ -57,6 +57,7 @@
         static void CreateInvisibleEdge(int pixelX, int pixelY, int tileSize);
         static void CreateGreenEnemy(int pixelX, int pixelY, int tileSize);
         static void CreateChaserEnemy(int pixelX, int pixelY, int tileSize);
+        static void CreateStalkerEnemy(int pixelX, int pixelY, int tileSize);
 
         // Eðer ihtiyacýnýz varsa baþka tile türleri de ekleyin:
         // static void CreateWallTile(int pixelX, int pixelY, int tileSize);

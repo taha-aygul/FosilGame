@@ -8,7 +8,7 @@
 //-----------------------------------------------------------------
 #include "AlienSprite.h"
 #include "PlayerSprite.h"
-
+#include <cmath>
 //-----------------------------------------------------------------
 // External Global Variables
 //-----------------------------------------------------------------
@@ -29,6 +29,7 @@ AlienSprite::AlienSprite(CustomBitmap* pBitmap, RECT& rcBounds,
   baBoundsAction)
 {
   isChaser = false;  // Varsayılan olarak takipçi değil
+  isStalker = false;
 }
 
 AlienSprite::~AlienSprite()
@@ -68,7 +69,33 @@ SPRITEACTION AlienSprite::Update()
       
     SetVelocity(ptVelocity);
   }
+  else if (isStalker && _pCarSprite != NULL)
+  {
+      RECT rcPlayer = _pCarSprite->GetPosition();
+      RECT rcAlien = GetPosition();
+      POINT ptVelocity = GetVelocity();
 
+      // Merkezden merkeze uzaklığı hesapla
+      int dx = (rcPlayer.left + _pCarSprite->GetWidth() / 2) - (rcAlien.left + GetWidth() / 2);
+      int dy = (rcPlayer.top + _pCarSprite->GetHeight() / 2) - (rcAlien.top + GetHeight() / 2);
+      float distance = sqrtf(static_cast<float>(dx * dx + dy * dy));
+
+      // Yakınsa X ekseninde hareket et
+      if (distance < 99999.0f)
+      {
+          if (abs(dx) > 2)
+              ptVelocity.x = (dx > 0) ? 1 : -1;
+          else
+              ptVelocity.x = 0; // Yaklaşınca dur
+      }
+      else
+      {
+          ptVelocity.x = 0; // uzaksa sabit
+      }
+
+      ptVelocity.y = 0; // Y ekseni sabit kalsın
+      SetVelocity(ptVelocity);
+  }
   // See if the alien should fire a missile
   if ((rand() % (_iDifficulty / 2)) == 0)
     saSpriteAction |= SA_ADDSPRITE;

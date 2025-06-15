@@ -80,6 +80,7 @@ public:
   static CustomBitmap* _ladderBitmap;
   static CustomBitmap* _greenEnemyBitmap;
   static CustomBitmap* _chaserEnemyBitmap;
+  static CustomBitmap* _stalkerEnemyBitmap;
 
 public:
 

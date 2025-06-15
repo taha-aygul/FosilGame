@@ -27,6 +27,8 @@ public:
   virtual Sprite*       AddSprite();
 
   // Yeni özellikler
+  bool isStalker;
   bool isChaser;  // Bu alien'ın takipçi olup olmadığını belirten flag
   void SetChaser(bool value) { isChaser = value; }
+  void SetStalker(bool value) { isStalker = value; }
 };
