@@ -65,6 +65,8 @@ void GameStart(HWND hWindow)
   _pGame->_eggBitmap = new CustomBitmap(hDC, IDB_EGG, _hInstance);
   _pGame->_ladderBitmap = new CustomBitmap(hDC, IDB_GREENBLOCK, _hInstance);
   _pGame-> _invisivbleEdgeBitmap = new CustomBitmap(hDC, IDB_INVISIBLEEDGE, _hInstance);
+  _pGame->_greenEnemyBitmap = new CustomBitmap(hDC, IDB_BLOBBO, _hInstance);
+
   // Create the starry background
   _pBackground = new StarryBackground(600, 450);
 
@@ -237,7 +239,7 @@ void GameCycle()
 
     // Randomly add aliens
     if ((rand() % _iDifficulty) == 0)
-      AddAlien();
+      //AddAlien();
 
     // Update the background
     _pBackground->Update();
@@ -361,6 +363,7 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
     CustomBitmap* _groundBitmap = GameEngine::GetEngine()->_eggBitmap;
     CustomBitmap* _ladderBitmap = GameEngine::GetEngine()->_ladderBitmap;
     CustomBitmap* _invisivbleEdgeBitmap = GameEngine::GetEngine()->_invisivbleEdgeBitmap;
+    CustomBitmap* _greenEnemyBitmap = GameEngine::GetEngine()->_greenEnemyBitmap;
 
   // See if a player missile and an alien have collided
     CustomBitmap* pHitter = pSpriteHitter->GetBitmap();
@@ -368,12 +371,10 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 
     
 
-    if ((pHitter == _invisivbleEdgeBitmap && (pHittee == _pJellyBitmap || pHittee == _pBlobboBitmap ||
-        pHittee == _pTimmyBitmap))) {
+    if ((pHitter == _invisivbleEdgeBitmap && (pHittee == _greenEnemyBitmap))) {
         pSpriteHittee->SetVelocity(-pSpriteHittee->GetVelocity().x, 0);
     }
-    if (pHittee == _invisivbleEdgeBitmap && (pHitter == _pJellyBitmap || pHitter == _pBlobboBitmap ||
-        pHitter == _pTimmyBitmap)) {
+    if (pHittee == _invisivbleEdgeBitmap && (pHitter == _greenEnemyBitmap)) {
         pSpriteHitter->SetVelocity(-pSpriteHitter->GetVelocity().x, 0);
     }
     

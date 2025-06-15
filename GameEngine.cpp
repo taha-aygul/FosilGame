@@ -16,6 +16,7 @@ CustomBitmap* GameEngine::_groundBitmap = nullptr;
 CustomBitmap* GameEngine::_eggBitmap = nullptr;
 CustomBitmap* GameEngine::_invisivbleEdgeBitmap = nullptr;
 CustomBitmap* GameEngine::_ladderBitmap = nullptr;
+CustomBitmap* GameEngine::_greenEnemyBitmap = nullptr;
 
 //-----------------------------------------------------------------
 // Windows Functions

@@ -4,6 +4,8 @@
 #include "Sprite.h"
 #include "CustomBitmap.h"
 #include <cassert>
+#include <random>
+#include <iostream>
 
 #pragma comment(lib, "gdiplus.lib")
 
@@ -105,8 +107,11 @@ void BitmapLevelLoader::GenerateLevelFromBitmap(int levelResourceID, int tileSiz
             else if (r == 255 && g == 255 && b == 0) {
 				CreateEgg((int)x, (int)y, tileSize);
             }
-            else if (r == 0 && g == 255 && b == 255) {
+            else if (r == 0 && g == 0 && b == 0) {
                 CreateInvisibleEdge((int)x, (int)y, tileSize);
+            }
+            else if (r == 0 && g == 128 && b == 0) {
+                CreateGreenEnemy((int)x, (int)y, tileSize);
             }
             else
             {
@@ -244,6 +249,34 @@ void BitmapLevelLoader::CreateEgg(int pixelX, int pixelY, int tileSize)
     pt.y = (LONG)worldY;
     egg->SetPosition(pt);
 
+    GameEngine::GetEngine()->AddSprite(egg);
+}
+
+
+void BitmapLevelLoader::CreateGreenEnemy(int pixelX, int pixelY, int tileSize)
+{
+    float worldX = (float)(pixelX * tileSize);
+    float worldY = (float)(pixelY * tileSize);
+
+    RECT rcBounds = { 0, 0, 600, 450 };
+    Sprite* egg = new Sprite(GameEngine::GetEngine()->_greenEnemyBitmap, rcBounds, BA_BOUNCE);
+    egg->SetNumFrames(8);
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, 1); // returns 0 or 1
+
+    int a = 3;
+    int sign = dist(gen) == 0 ? 1 : -1;
+    int result = a * sign;
+    egg->SetVelocity(result, 0);
+
+    POINT pt;
+    pt.x = (LONG)worldX;
+    pt.y = (LONG)worldY;
+    egg->SetPosition(pt);
+
+    // 4) Engine�e ekle
     GameEngine::GetEngine()->AddSprite(egg);
 }
 
