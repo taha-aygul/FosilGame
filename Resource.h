@@ -30,7 +30,7 @@
 #define IDB_REDBLOCK		2014
 #define IDB_BLUEBLOCK		2015
 #define IDB_GREENBLOCK		2016
-
+#define IDB_ENDMARKER		2017
 
 //-----------------------------------------------------------------
 // Wave Sounds                Range : 3000 - 3999

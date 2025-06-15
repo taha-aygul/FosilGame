@@ -59,5 +59,5 @@
         // static void CreateWallTile(int pixelX, int pixelY, int tileSize);
         // static void CreateItemAt(int pixelX, int pixelY, int tileSize);
         // vb.
-	    static void CreateTile(UINT szResourceName, int pixelX, int pixelY, int tileSize);
+	    static void CreateTileEndMark(int pixelX, int pixelY, int tileSize);
     };

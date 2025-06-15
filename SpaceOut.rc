@@ -23,7 +23,7 @@ IDB_SMCAR             BITMAP       "SmCar.bmp"
 IDB_MISSILE           BITMAP       "Missile.bmp"
 IDB_BLOBBO            BITMAP       "Blobbo.bmp"
 IDB_BMISSILE          BITMAP       "BMissile.bmp"
-IDB_JELLY             BITMAP       "Jelly.bmp"
+IDB_JELLY			  BITMAP       "Jelly.bmp"
 IDB_JMISSILE          BITMAP       "JMissile.bmp"
 IDB_TIMMY             BITMAP       "Timmy.bmp"
 IDB_TMISSILE          BITMAP       "TMissile.bmp"
@@ -34,6 +34,7 @@ IDB_GAMEOVER          BITMAP       "GameOver.bmp"
 IDB_LADDER            BITMAP       "_ladder.bmp"
 IDB_REDBLOCK          BITMAP       "_redBlock.bmp"
 IDB_LEVEL01			  BITMAP       "_Level01.bmp"
+IDB_ENDMARKER		  BITMAP	   "_blueBlock.bmp"
 
 //-----------------------------------------------------------------
 // Wave Sounds

@@ -100,7 +100,11 @@ void BitmapLevelLoader::GenerateLevelFromBitmap(int levelResourceID, int tileSiz
                 // Mavi: Enemy
                 CreateEnemyAt((int)x, (int)y, tileSize);
             }
-            else
+            else if (r == 0 && g == 60 && b == 255) {
+
+                // Mavi: Tile end
+                CreateTileEndMark((int)x, (int)y, tileSize);
+            }
             {
                 // Siyah veya baþka renkler: Boþ (hiçbir þey yapma)
                 // ya da baþka bir renge göre baþka nesne eklemek isterseniz buraya ekleyin:
@@ -174,6 +178,8 @@ void BitmapLevelLoader::CreateLadderTile(int pixelX, int pixelY, int tileSize)
     GameEngine::GetEngine()->AddSprite(ladder);
 }
 
+
+
 // ---------------------------------------------------------
 // CreateEnemyAt
 // ---------------------------------------------------------
@@ -200,22 +206,25 @@ void BitmapLevelLoader::CreateEnemyAt(int pixelX, int pixelY, int tileSize)
 }
 
 
-
-static void CreateTile(UINT uiResID, int pixelX, int pixelY, int tileSize, HDC hDC, HINSTANCE hInstance) {
-
+// ---------------------------------------------------------
+// CreateEndMarkAt
+// ---------------------------------------------------------
+void BitmapLevelLoader::CreateTileEndMark(int pixelX, int pixelY, int tileSize) {
 
     float worldX = (float)(pixelX * tileSize);
     float worldY = (float)(pixelY * tileSize);
 
+    //    resource.h:  #define IDB_ENDMARKER		2017
+    //    SpaceOut.rc: IDB_ENEMY BITMAP "res\\enemy.bmp"
 
-    CustomBitmap* pEnemyBmp = new CustomBitmap(hDC, uiResID, hInstance);
-    Sprite* enemy = new Sprite(pEnemyBmp);
+    CustomBitmap* pMarkerBmp = new CustomBitmap(hDC, IDB_TIMMY, hInstance);
+    Sprite* marker = new Sprite(pMarkerBmp);
 
     POINT pt;
     pt.x = (LONG)worldX;
     pt.y = (LONG)worldY;
-    enemy->SetPosition(pt);
+    marker->SetPosition(pt);
 
-    GameEngine::GetEngine()->AddSprite(enemy);
+    GameEngine::GetEngine()->AddSprite(marker);
 
 }
