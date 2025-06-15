@@ -75,6 +75,12 @@ protected:
   BOOL                CheckSpriteCollision(Sprite* pTestSprite);
 public:
   static CustomBitmap* _groundBitmap;
+<<<<<<< Updated upstream
+=======
+  static CustomBitmap* _eggBitmap;
+  static CustomBitmap* _invisibleEdgeBitmap;
+  static CustomBitmap* _ladderBitmap;
+>>>>>>> Stashed changes
 
 public:
 

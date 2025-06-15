@@ -62,6 +62,12 @@ void GameStart(HWND hWindow)
   _pGameOverBitmap = new CustomBitmap(hDC, IDB_GAMEOVER, _hInstance);
 
   _pGame->_groundBitmap = new CustomBitmap(hDC, IDB_REDBLOCK, _hInstance);
+<<<<<<< Updated upstream
+=======
+  _pGame->_eggBitmap = new CustomBitmap(hDC, IDB_EGG, _hInstance);
+  _pGame->_invisibleEdgeBitmap = new CustomBitmap(hDC, IDB_INVISIBLEEDGE, _hInstance);
+  _pGame->_ladderBitmap = new CustomBitmap(hDC, IDB_GREENBLOCK, _hInstance);
+>>>>>>> Stashed changes
 
   // Create the starry background
   _pBackground = new StarryBackground(600, 450);
@@ -310,9 +316,34 @@ void HandleJoystick(JOYSTATE jsJoystickState)
 
 BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 {
+
+    CustomBitmap* _groundBitmap = GameEngine::GetEngine()->_groundBitmap;
+    CustomBitmap* _invisibleEdgeBitmap = GameEngine::_invisibleEdgeBitmap;
+    CustomBitmap* _ladderBitmap = GameEngine::_ladderBitmap;
+
   // See if a player missile and an alien have collided
     CustomBitmap* pHitter = pSpriteHitter->GetBitmap();
     CustomBitmap* pHittee = pSpriteHittee->GetBitmap();
+
+    if ((pHitter == _invisibleEdgeBitmap &&
+        (pHittee == _pJellyBitmap || pHittee == _pBlobboBitmap || pHittee == _pTimmyBitmap))) {
+        pSpriteHittee->SetVelocity(-pSpriteHittee->GetVelocity().x, 0);
+    }
+    if ((pHittee == _invisibleEdgeBitmap &&
+        (pHitter == _pJellyBitmap || pHitter == _pBlobboBitmap || pHitter == _pTimmyBitmap))) {
+        pSpriteHitter->SetVelocity(-pSpriteHitter->GetVelocity().x, 0);
+    }
+
+    if ((pHittee == _ladderBitmap &&
+        (pHitter == _pJellyBitmap || pHitter == _pBlobboBitmap || pHitter == _pTimmyBitmap))) {
+        pSpriteHitter->SetVelocity(0, -pSpriteHitter->GetVelocity().y);
+    }
+
+    if ((pHitter == _ladderBitmap &&
+        (pHittee == _pJellyBitmap || pHittee == _pBlobboBitmap || pHittee == _pTimmyBitmap))) {
+        pSpriteHittee->SetVelocity(0, -pSpriteHittee->GetVelocity().y);
+    }
+
   if ((pHitter == _pMissileBitmap && (pHittee == _pBlobboBitmap ||
     pHittee == _pJellyBitmap || pHittee == _pTimmyBitmap)) ||
     (pHittee == _pMissileBitmap && (pHitter == _pBlobboBitmap ||

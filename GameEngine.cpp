@@ -13,6 +13,12 @@
 //-----------------------------------------------------------------
 GameEngine *GameEngine::m_pGameEngine = NULL;
 CustomBitmap* GameEngine::_groundBitmap = nullptr;
+<<<<<<< Updated upstream
+=======
+CustomBitmap* GameEngine::_eggBitmap = nullptr;
+CustomBitmap* GameEngine::_invisibleEdgeBitmap = nullptr;
+CustomBitmap* GameEngine::_ladderBitmap = nullptr;
+>>>>>>> Stashed changes
 
 //-----------------------------------------------------------------
 // Windows Functions

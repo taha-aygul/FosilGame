@@ -105,6 +105,13 @@ void BitmapLevelLoader::GenerateLevelFromBitmap(int levelResourceID, int tileSiz
                 // Mavi: Tile end
                 CreateTileEndMark((int)x, (int)y, tileSize);
             }
+<<<<<<< Updated upstream
+=======
+            else if (r == 0 && g == 0 && b == 0) {
+                CreateInvisibleEdge((int)x, (int)y, tileSize);
+            }
+            else
+>>>>>>> Stashed changes
             {
                 // Siyah veya baþka renkler: Boþ (hiçbir þey yapma)
                 // ya da baþka bir renge göre baþka nesne eklemek isterseniz buraya ekleyin:
@@ -228,3 +235,43 @@ void BitmapLevelLoader::CreateTileEndMark(int pixelX, int pixelY, int tileSize) 
     GameEngine::GetEngine()->AddSprite(marker);
 
 }
+<<<<<<< Updated upstream
+=======
+
+
+void BitmapLevelLoader::CreateEgg(int pixelX, int pixelY, int tileSize)
+{
+    float worldX = (float)(pixelX * tileSize);
+    float worldY = (float)(pixelY * tileSize);
+
+    RECT rcBounds = { 0, 0, 600, 450 };
+    Sprite* egg = new Sprite(GameEngine::GetEngine()->_eggBitmap, rcBounds, BA_WRAP);
+
+    POINT pt;
+    pt.x = (LONG)worldX;
+    pt.y = (LONG)worldY;
+    egg->SetPosition(pt);
+
+    // 4) Engine’e ekle
+    GameEngine::GetEngine()->AddSprite(egg);
+}
+
+void BitmapLevelLoader::CreateInvisibleEdge(int pixelX, int pixelY, int tileSize)
+{
+    float worldX = (float)(pixelX * tileSize);
+    float worldY = (float)(pixelY * tileSize);
+
+    RECT rcBounds = { 0, 0, 600, 450 };
+    Sprite* egg = new Sprite(GameEngine::GetEngine()->_invisibleEdgeBitmap, rcBounds, BA_WRAP);
+
+    POINT pt;
+    pt.x = (LONG)worldX;
+    pt.y = (LONG)worldY;
+    egg->SetPosition(pt);
+
+    // 4) Engine’e ekle
+    GameEngine::GetEngine()->AddSprite(egg);
+}
+
+
+>>>>>>> Stashed changes
