@@ -64,7 +64,7 @@ void GameStart(HWND hWindow)
   _pGame->_groundBitmap = new CustomBitmap(hDC, IDB_REDBLOCK, _hInstance);
   _pGame->_eggBitmap = new CustomBitmap(hDC, IDB_EGG, _hInstance);
   _pGame->_ladderBitmap = new CustomBitmap(hDC, IDB_GREENBLOCK, _hInstance);
-
+  _pGame-> _invisivbleEdgeBitmap = new CustomBitmap(hDC, IDB_INVISIBLEEDGE, _hInstance);
   // Create the starry background
   _pBackground = new StarryBackground(600, 450);
 
