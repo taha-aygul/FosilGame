@@ -1,5 +1,4 @@
     #pragma once
-
     #include <windows.h>
     #include <objidl.h>
     #include <gdiplus.h>
@@ -57,7 +56,8 @@
         static void CreateEgg(int pixelX, int pixelY, int tileSize);
         static void CreateInvisibleEdge(int pixelX, int pixelY, int tileSize);
         static void CreateGreenEnemy(int pixelX, int pixelY, int tileSize);
-        
+        static void CreateChaserEnemy(int pixelX, int pixelY, int tileSize);
+
         // Eðer ihtiyacýnýz varsa baþka tile türleri de ekleyin:
         // static void CreateWallTile(int pixelX, int pixelY, int tileSize);
         // static void CreateItemAt(int pixelX, int pixelY, int tileSize);
