@@ -20,15 +20,23 @@ SPRITEACTION PlayerSprite::Update()
     if (isOnGround)
     {
         velocityY = 0;
-	}
-	
-    else {
-        velocityY += gravity;
-		velocityY = min(velocityY, 5.0f); // Maksimum düşme hızı
     }
+    else
+    {
+        if (isCollidingWithLadder )
+        {
+            // Merdivenle çarpışma varsa, düşme hızını sıfırla
+          velocityY = 0;
+        }
+        else if (!isCollidingWithLadder) {
+            velocityY += gravity;
+            velocityY = min(velocityY, 5.0f); // Maksimum düşme hızı
+        }
+    }
+	
  
     isOnGround = false;
-
+	isCollidingWithLadder = false;
     return sa;
 }
 
@@ -42,3 +50,6 @@ void PlayerSprite::HandleKeyDown(UINT key)
         isOnGround = false;
     }
 }
+
+
+

@@ -6,9 +6,9 @@ class PlayerSprite : public Sprite
 public:
     bool isCollidingWithLadder;
     bool isOnGround;
+    float velocityY;      // Dikey hız
 
 private:
-    float velocityY;      // Dikey hız
     float gravity;        // Yerçekimi ivmesi
     bool isJumping;       // Zıplama kontrolü
 

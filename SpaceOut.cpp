@@ -247,11 +247,11 @@ void HandleKeys()
      
     if (GetAsyncKeyState(VK_UP) <0 && _pCarSprite -> isCollidingWithLadder)
     {
-		ptVelocity.y = max(ptVelocity.y - 1, -maxSpeed);
+		_pCarSprite->velocityY = max(ptVelocity.y - 1, -maxSpeed); // Merdivende yukarı çıkma hızı
     }
     else if (GetAsyncKeyState(VK_DOWN) < 0 && _pCarSprite->isCollidingWithLadder)
     {
-		ptVelocity.y = min(ptVelocity.y + 2, maxSpeed);
+		_pCarSprite->velocityY = min(ptVelocity.y + 1, maxSpeed); // Merdivende yukarı çıkma hızı
     }
     else
 	{
@@ -262,10 +262,6 @@ void HandleKeys()
      
     _pCarSprite->SetVelocity(ptVelocity);
 
-
-   
-   
-   
 
     
 
@@ -392,12 +388,18 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
   if (pHittee == _pCarBitmap) {
 
 
+     
+      if (pHitter == _pGame->_ladderBitmap)
+      {
+		  _pCarSprite->isCollidingWithLadder = true;
+      }
+
       if (pHitter == _pGame->_eggBitmap)
       {
           CollectEgg(pSpriteHitter);
       }
 
-      if (pHitter == _pGame->_groundBitmap)
+      if (pHitter == _pGame->_groundBitmap && !_pCarSprite->isCollidingWithLadder)
       {
           //_pCarSprite->isOnGround = true;
 
