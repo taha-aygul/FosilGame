@@ -134,7 +134,7 @@ void BitmapLevelLoader::CreateGroundTile(int pixelX, int pixelY, int tileSize)
     CustomBitmap* pGroundBmp = new CustomBitmap(hDC, IDB_REDBLOCK, hInstance);
   
     RECT rcBounds = { 0, 0, 600, 450 };
-    Sprite* ground = new Sprite(pGroundBmp,rcBounds,BA_WRAP);
+    Sprite* ground = new Sprite(GameEngine::GetEngine()->_groundBitmap,rcBounds,BA_WRAP);
 
     // 3) Sprite’ýn pozisyonunu ayarla:
     POINT pt;

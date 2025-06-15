@@ -71,11 +71,13 @@ protected:
   RECT                m_rcJoystickTrip;
   vector<Sprite*>     m_vSprites;
   UINT                m_uiMIDIPlayerID;
-
   // Helper Methods
   BOOL                CheckSpriteCollision(Sprite* pTestSprite);
+public:
+  static CustomBitmap* _groundBitmap;
 
 public:
+
   // Constructor(s)/Destructor
           GameEngine(HINSTANCE hInstance, LPTSTR szWindowClass, LPTSTR szTitle,
             WORD wIcon, WORD wSmallIcon, int iWidth = 640, int iHeight = 480);

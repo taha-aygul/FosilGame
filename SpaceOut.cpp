@@ -61,8 +61,7 @@ void GameStart(HWND hWindow)
   _pLgExplosionBitmap = new CustomBitmap(hDC, IDB_LGEXPLOSION, _hInstance);
   _pGameOverBitmap = new CustomBitmap(hDC, IDB_GAMEOVER, _hInstance);
 
-  denemeBitmap = new CustomBitmap(hDC, IDB_REDBLOCK, _hInstance);
-  deneme2Bitmap = new CustomBitmap(hDC, IDB_REDBLOCK, _hInstance);
+  _pGame->_groundBitmap = new CustomBitmap(hDC, IDB_REDBLOCK, _hInstance);
 
   // Create the starry background
   _pBackground = new StarryBackground(600, 450);
@@ -87,13 +86,7 @@ void NewGame()
     _pCarSprite->SetPosition(10, 10);
     _pGame->AddSprite(_pCarSprite);
 
-	Sprite* denemeSprite = new Sprite(denemeBitmap, rcBounds, BA_WRAP);
-    denemeSprite->SetPosition(400, 250);
-    GameEngine::GetEngine()->AddSprite(denemeSprite);
-    
-    Sprite* deneme2Sprite = new Sprite(deneme2Bitmap, rcBounds, BA_WRAP);
-    deneme2Sprite->SetPosition(200, 300);
-    GameEngine::GetEngine()->AddSprite(deneme2Sprite);
+	
 
     // Initialize the game variables
     _iFireInputDelay = 0;
@@ -187,6 +180,7 @@ void GameCycle()
 {
   if (!_bGameOver)
   {
+
     // Randomly add aliens
     if ((rand() % _iDifficulty) == 0)
       AddAlien();
@@ -195,6 +189,8 @@ void GameCycle()
     _pBackground->Update();
 
     // Update the sprites
+    //_pCarSprite->isOnGround = false;
+
     _pGame->UpdateSprites();
 
     // Obtain a device context for repainting the game
@@ -389,6 +385,19 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
   }
 
 
+
+  if (pHittee == _pCarBitmap) {
+
+      if (pHitter == _pGame->_groundBitmap)
+      {
+          _pCarSprite->isOnGround = true;
+
+      }
+      else {   /// AMINA KODUMUN KODUNDA ÇARPIŞMA ALGILANIYO AMA ÇARPIŞMADAN ÇIKTIĞINI ALGILAYAMIYORUZ
+          
+
+      }
+  }
  
 
   return FALSE;

@@ -4,7 +4,7 @@
 SPRITEACTION PlayerSprite::Update()
 {
     // Yerçekimini uygula
-    velocityY += gravity;
+    //velocityY += gravity;
 
     // Mevcut velocity'yi al, sadece Y'yi değiştir
     POINT ptVel = GetVelocity();
@@ -16,7 +16,16 @@ SPRITEACTION PlayerSprite::Update()
 
     // Oyuncu zemine değdi mi kontrol et
     RECT pos = GetPosition();
-    if (pos.bottom >= 400)
+
+    if (isOnGround)
+    {
+        velocityY = 0;
+	}
+	
+    else {
+        velocityY = gravity;
+    }
+   /* if (pos.bottom >= 400)
     {
         SetPosition(pos.left, 400 - GetHeight());
         velocityY = 0;
@@ -25,8 +34,8 @@ SPRITEACTION PlayerSprite::Update()
     }
     else
     {
-        isOnGround = false;
-    }
+       // isOnGround = false;
+    }*/
 
     return sa;
 }

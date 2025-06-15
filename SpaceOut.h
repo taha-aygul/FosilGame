@@ -38,7 +38,6 @@ CustomBitmap*           _pSmExplosionBitmap;
 CustomBitmap*           _pLgExplosionBitmap;
 CustomBitmap*           _pGameOverBitmap;
 
-CustomBitmap* denemeBitmap;
 CustomBitmap* deneme2Bitmap;
 
 StarryBackground* _pBackground;

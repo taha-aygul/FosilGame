@@ -12,6 +12,7 @@
 // Static Variable Initialization
 //-----------------------------------------------------------------
 GameEngine *GameEngine::m_pGameEngine = NULL;
+CustomBitmap* GameEngine::_groundBitmap = nullptr;
 
 //-----------------------------------------------------------------
 // Windows Functions
