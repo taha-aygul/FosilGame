@@ -54,4 +54,6 @@
 
 #define IDB_LEVEL01          4000
 #define IDB_LEVEL02          4001
-
+#define IDB_LEVEL03          4002
+#define IDB_LEVEL04          4003
+#define IDB_LEVEL05          4004
