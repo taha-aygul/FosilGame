@@ -287,7 +287,7 @@ void BitmapLevelLoader::CreateGreenEnemy(int pixelX, int pixelY, int tileSize)
 
     RECT rcBounds = { 0, 0, 600, 450 };
     Sprite* egg = new Sprite(GameEngine::GetEngine()->_greenEnemyBitmap, rcBounds, BA_BOUNCE);
-    egg->SetNumFrames(9, FALSE, TRUE);
+    egg->SetNumFrames(6, FALSE, TRUE);
 
     std::random_device rd;
     std::mt19937 gen(rd());

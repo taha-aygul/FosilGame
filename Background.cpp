@@ -62,7 +62,7 @@ StarryBackground::StarryBackground(int iWidth, int iHeight, int iNumStars,
   int iTwinkleDelay) : Background(iWidth, iHeight, 0)
 {
   // Initialize the member variables
-  m_iNumStars = min(iNumStars, 100);
+  m_iNumStars = min(iNumStars, 1);
   m_iTwinkleDelay = iTwinkleDelay;
 
   // Create the stars
