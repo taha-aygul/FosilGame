@@ -26,6 +26,8 @@ Sprite::Sprite(CustomBitmap* pBitmap)
   m_bHidden = FALSE;
   m_bDying = FALSE;
   m_bOneCycle = FALSE;
+  m_bFlipped = FALSE;
+  m_bFlippable = FALSE; // Default to not flippable
 }
 
 Sprite::Sprite(CustomBitmap* pBitmap, RECT& rcBounds, BOUNDSACTION baBoundsAction)
@@ -48,6 +50,8 @@ Sprite::Sprite(CustomBitmap* pBitmap, RECT& rcBounds, BOUNDSACTION baBoundsActio
   m_bHidden = FALSE;
   m_bDying = FALSE;
   m_bOneCycle = FALSE;
+  m_bFlipped = FALSE;
+  m_bFlippable = FALSE; // Default to not flippable
 }
 
 Sprite::Sprite(CustomBitmap* pBitmap, POINT ptPosition, POINT ptVelocity, int iZOrder,
@@ -67,6 +71,9 @@ Sprite::Sprite(CustomBitmap* pBitmap, POINT ptPosition, POINT ptVelocity, int iZ
   m_bHidden = FALSE;
   m_bDying = FALSE;
   m_bOneCycle = FALSE;
+  m_bFlipped = FALSE;
+  m_bFlippable = FALSE; // Default to not flippable
+
 }
 
 Sprite::~Sprite()
@@ -82,6 +89,17 @@ SPRITEACTION Sprite::Update()
   if (m_bDying)
     return SA_KILL;
 
+  if (m_bFlippable)
+  {
+      if (m_ptVelocity.x > 0)
+      {
+          SetFlipped(FALSE);
+      }
+      else if (m_ptVelocity.x < 0)
+      {
+          SetFlipped(TRUE);
+      }
+  }
   // Update the frame
   UpdateFrame();
 

@@ -96,9 +96,10 @@ void NewGame()
 
     // Create the car sprite
     RECT rcBounds = { 0, 0, 600, 450 };
-    _pCarSprite = new PlayerSprite(_pCarBitmap, rcBounds, BA_WRAP);
-    _pCarSprite->SetPosition(10, 10);
+    _pCarSprite = new PlayerSprite(_pCarBitmap, rcBounds, BA_BOUNCE);
+    _pCarSprite->SetPosition(200, 200);
     _pGame->AddSprite(_pCarSprite);
+	//_pCarSprite->SetNumFrames(9, FALSE, TRUE); // Set number of frames and flippable
 
 	
 

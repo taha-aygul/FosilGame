@@ -15,18 +15,24 @@ private:
 public:
     // Constructor (basic)
     PlayerSprite(CustomBitmap* pBitmap)
-        : Sprite(pBitmap), gravity(1.3f), velocityY(0.0f), isJumping(false), isOnGround(false) {} 
+        : Sprite(pBitmap), gravity(1.3f), velocityY(0.0f), isJumping(false), isOnGround(false) {
+        m_bFlippable = true;
+    }
 
     // Constructor with bounds
     PlayerSprite(CustomBitmap* pBitmap, RECT& rcBounds,
         BOUNDSACTION baBoundsAction = BA_STOP)
-        : Sprite(pBitmap, rcBounds, baBoundsAction), gravity(1.3f), velocityY(0.0f), isJumping(false), isOnGround(false) {}
+        : Sprite(pBitmap, rcBounds, baBoundsAction), gravity(1.3f), velocityY(0.0f), isJumping(false), isOnGround(false) {
+		m_bFlippable = true; // Oyuncu sprite'ı flippable olsun
+    }
 
     // Full constructor
     PlayerSprite(CustomBitmap* pBitmap, POINT ptPosition, POINT ptVelocity, int iZOrder,
         RECT& rcBounds, BOUNDSACTION baBoundsAction = BA_STOP)
         : Sprite(pBitmap, ptPosition, ptVelocity, iZOrder, rcBounds, baBoundsAction),
-          gravity(1.3f), velocityY(0.0f), isJumping(false), isOnGround(false) {}
+          gravity(1.3f), velocityY(0.0f), isJumping(false), isOnGround(false) {
+        m_bFlippable = true;
+    }
 
     // Update fonksiyonu override
     virtual SPRITEACTION Update() override;

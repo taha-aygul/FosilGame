@@ -96,9 +96,7 @@ SPRITEACTION AlienSprite::Update()
       ptVelocity.y = 0; // Y ekseni sabit kalsın
       SetVelocity(ptVelocity);
   }
-  // See if the alien should fire a missile
-  if ((rand() % (_iDifficulty / 2)) == 0)
-    saSpriteAction |= SA_ADDSPRITE;
+
 
   return saSpriteAction;
 }

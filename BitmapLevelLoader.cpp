@@ -267,7 +267,7 @@ void BitmapLevelLoader::CreateChaserEnemy(int pixelX, int pixelY, int tileSize)
 
     RECT rcBounds = { 0, 0, 600, 450 };
     AlienSprite* egg = new AlienSprite(GameEngine::GetEngine()->_chaserEnemyBitmap, rcBounds, BA_BOUNCE);
-    egg->SetNumFrames(8);
+    egg->SetNumFrames(4,FALSE,TRUE);
     egg->SetChaser(true);
 
 
@@ -287,7 +287,7 @@ void BitmapLevelLoader::CreateGreenEnemy(int pixelX, int pixelY, int tileSize)
 
     RECT rcBounds = { 0, 0, 600, 450 };
     Sprite* egg = new Sprite(GameEngine::GetEngine()->_greenEnemyBitmap, rcBounds, BA_BOUNCE);
-    egg->SetNumFrames(8);
+    egg->SetNumFrames(9, FALSE, TRUE);
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -315,7 +315,7 @@ void BitmapLevelLoader::CreateStalkerEnemy(int pixelX, int pixelY, int tileSize)
 
     RECT rcBounds = { 0, 0, 600, 450 };
     AlienSprite* egg = new AlienSprite(GameEngine::GetEngine()->_stalkerEnemyBitmap, rcBounds, BA_BOUNCE);
-    egg->SetNumFrames(8);
+    egg->SetNumFrames(4, FALSE, TRUE);
     egg->SetStalker(true);
 
 
