@@ -92,12 +92,12 @@ public:
 	// Sprite.h içinde
 	inline int Sprite::GetWidth()
 	{
-		if (m_pBitmap == NULL || m_iNumFrames <= 0)
-			return 0;
+		 if (m_pBitmap == NULL || m_iNumFrames <= 0)
+        return 0;
 
-		int iTotalFramesInBitmap = m_bFlippable ? (m_iNumFrames * 2) : m_iNumFrames;
-
-		return m_pBitmap->GetWidth() / iTotalFramesInBitmap;
+    int iTotalFramesInBitmap = m_bFlippable ? (m_iNumFrames * 2) : m_iNumFrames;
+    
+    return m_pBitmap->GetWidth() / iTotalFramesInBitmap;
 	}
 	int     GetHeight() { return m_pBitmap->GetHeight(); };
 

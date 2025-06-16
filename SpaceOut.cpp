@@ -81,7 +81,7 @@ void GameStart(HWND hWindow)
 }
 
 int _currentLevel = 1;
-const int _maxLevel = 3; // Set this to your total number of levels
+const int _maxLevel = 5; // Set this to your total number of levels
 int _eggsCollected = 0;
 int _eggsInLevel = 0; // Number of eggs in the current level
 
@@ -96,8 +96,8 @@ void NewGame()
 
     // Create the car sprite
     RECT rcBounds = { 0, 0, 600, 450 };
-    _pCarSprite = new PlayerSprite(_pCarBitmap, rcBounds, BA_BOUNCE);
-    _pCarSprite->SetPosition(200, 200);
+    _pCarSprite = new PlayerSprite(_pCarBitmap, rcBounds, BA_WRAP);
+    _pCarSprite->SetPosition(10, 10);
     _pGame->AddSprite(_pCarSprite);
 	_pCarSprite->SetNumFrames(9, FALSE, TRUE); // Set number of frames and flippable
 
@@ -305,7 +305,7 @@ void HandleKeys()
 
     //  DAMPING EKLEND�
     const float dampingFactor = 0.85f;   // daha çok yavaşlatır
-    const float maxSpeed = 4.0f;         // daha düşük hız
+    const float maxSpeed = 6.0f;         // daha düşük hız
 
     if (GetAsyncKeyState(VK_LEFT) < 0)
     {

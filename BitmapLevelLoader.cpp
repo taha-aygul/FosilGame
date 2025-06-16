@@ -250,7 +250,7 @@ void BitmapLevelLoader::CreateEgg(int pixelX, int pixelY, int tileSize)
 
     RECT rcBounds = { 0, 0, 600, 450 };
     Sprite* egg = new Sprite(GameEngine::GetEngine()->_eggBitmap, rcBounds, BA_WRAP);
-
+	egg->SetNumFrames(1, FALSE, TRUE); // 4 frames for the egg animation
     POINT pt;
     pt.x = (LONG)worldX;
     pt.y = (LONG)worldY;
@@ -267,7 +267,7 @@ void BitmapLevelLoader::CreateChaserEnemy(int pixelX, int pixelY, int tileSize)
 
     RECT rcBounds = { 0, 0, 600, 450 };
     AlienSprite* egg = new AlienSprite(GameEngine::GetEngine()->_chaserEnemyBitmap, rcBounds, BA_BOUNCE);
-    egg->SetNumFrames(4,FALSE,TRUE);
+    egg->SetNumFrames(8,FALSE,FALSE);
     egg->SetChaser(true);
 
 
@@ -287,7 +287,7 @@ void BitmapLevelLoader::CreateGreenEnemy(int pixelX, int pixelY, int tileSize)
 
     RECT rcBounds = { 0, 0, 600, 450 };
     Sprite* egg = new Sprite(GameEngine::GetEngine()->_greenEnemyBitmap, rcBounds, BA_BOUNCE);
-    egg->SetNumFrames(6, FALSE, TRUE);
+    egg->SetNumFrames(9, FALSE, TRUE);
 
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -300,7 +300,7 @@ void BitmapLevelLoader::CreateGreenEnemy(int pixelX, int pixelY, int tileSize)
 
     POINT pt;
     pt.x = (LONG)worldX;
-    pt.y = (LONG)worldY;
+    pt.y = (LONG)worldY-11;
     egg->SetPosition(pt);
 
     // 4) Engine�e ekle
@@ -315,13 +315,13 @@ void BitmapLevelLoader::CreateStalkerEnemy(int pixelX, int pixelY, int tileSize)
 
     RECT rcBounds = { 0, 0, 600, 450 };
     AlienSprite* egg = new AlienSprite(GameEngine::GetEngine()->_stalkerEnemyBitmap, rcBounds, BA_BOUNCE);
-    egg->SetNumFrames(4, FALSE, TRUE);
+    egg->SetNumFrames(9, FALSE, TRUE);
     egg->SetStalker(true);
 
 
     POINT pt;
     pt.x = (LONG)worldX;
-    pt.y = (LONG)worldY;
+    pt.y = (LONG)worldY-20;
     egg->SetPosition(pt);
 
     // 4) Engine�e ekle

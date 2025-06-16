@@ -30,7 +30,7 @@ SPRITEACTION PlayerSprite::Update()
         }
         else if (!isCollidingWithLadder) {
             velocityY += gravity;
-            velocityY = min(velocityY, 5.0f); // Maksimum düşme hızı
+            velocityY = min(velocityY, 6.50f); // Maksimum düşme hızı
         }
     }
 	
@@ -45,7 +45,7 @@ void PlayerSprite::HandleKeyDown(UINT key)
 {
     if (key == VK_SPACE && (isOnGround|| isCollidingWithLadder))
     {
-        velocityY = -12.0f;   // zıplama gücü
+        velocityY = -14.0f;   // zıplama gücü
         isJumping = true;
         isOnGround = false;
     }

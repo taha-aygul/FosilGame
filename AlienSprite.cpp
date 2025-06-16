@@ -81,7 +81,7 @@ SPRITEACTION AlienSprite::Update()
       float distance = sqrtf(static_cast<float>(dx * dx + dy * dy));
 
       // Yakınsa X ekseninde hareket et
-      if (distance < 99999.0f)
+      if (distance <130.0f)
       {
           if (abs(dx) > 2)
               ptVelocity.x = (dx > 0) ? 1 : -1;

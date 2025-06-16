@@ -120,6 +120,7 @@
     <Image Include="_egg.bmp" />
     <Image Include="_greenBlock.bmp" />
     <Image Include="_invisibleEdge.bmp" />
+    <Image Include="_Level03.bmp" />
     <Image Include="_redBlock.bmp" />
     <Image Include="_Level01.bmp" />
     <Image Include="_ladder.bmp" />
