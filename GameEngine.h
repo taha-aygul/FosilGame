@@ -49,7 +49,6 @@ void MouseButtonUp(int x, int y, BOOL bLeft);
 void MouseMove(int x, int y);
 void HandleJoystick(JOYSTATE jsJoystickState);
 BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee);
-void SpriteDying(Sprite* pSprite);
 
 //-----------------------------------------------------------------
 // GameEngine Class

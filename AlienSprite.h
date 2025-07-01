@@ -24,7 +24,6 @@ public:
 
   // General Methods
   virtual SPRITEACTION  Update();
-  virtual Sprite*       AddSprite();
 
   // Yeni özellikler
   bool isStalker;

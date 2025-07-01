@@ -10,6 +10,14 @@
 #include "CustomBitmap.h"
 #include "BitmapLevelLoader.h"
 
+
+
+int _currentLevel = 4;
+const int _maxLevel = 5; // Set this to your total number of levels
+int _eggsCollected = 0;
+int _eggsInLevel = 0; // Number of eggs in the current level
+
+
 //-----------------------------------------------------------------
 // Game Engine Functions
 //-----------------------------------------------------------------
@@ -49,16 +57,7 @@ void GameStart(HWND hWindow)
 
   // Create and load the bitmaps
   _pDesertBitmap = new CustomBitmap(hDC, IDB_DESERT, _hInstance);
-  _pCarBitmap = new CustomBitmap(hDC, IDB_LADDER, _hInstance);
-  _pSmCarBitmap = new CustomBitmap(hDC, IDB_SMCAR, _hInstance);
-  _pMissileBitmap = new CustomBitmap(hDC, IDB_MISSILE, _hInstance);
-  _pBlobboBitmap = new CustomBitmap(hDC, IDB_BLOBBO, _hInstance);
-  _pBMissileBitmap = new CustomBitmap(hDC, IDB_BMISSILE, _hInstance);
-  _pJellyBitmap = new CustomBitmap(hDC, IDB_JELLY, _hInstance);
-  _pJMissileBitmap = new CustomBitmap(hDC, IDB_JMISSILE, _hInstance);
-  _pTimmyBitmap = new CustomBitmap(hDC, IDB_TIMMY, _hInstance);
-  _pTMissileBitmap = new CustomBitmap(hDC, IDB_TMISSILE, _hInstance);
-  _pSmExplosionBitmap = new CustomBitmap(hDC, IDB_SMEXPLOSION, _hInstance);
+  _pPlayerBitmap = new CustomBitmap(hDC, IDB_LADDER, _hInstance);
   _pLgExplosionBitmap = new CustomBitmap(hDC, IDB_LGEXPLOSION, _hInstance);
   _pGameOverBitmap = new CustomBitmap(hDC, IDB_GAMEOVER, _hInstance);
 
@@ -80,34 +79,26 @@ void GameStart(HWND hWindow)
   NewGame();
 }
 
-int _currentLevel = 1;
-const int _maxLevel = 5; // Set this to your total number of levels
-int _eggsCollected = 0;
-int _eggsInLevel = 0; // Number of eggs in the current level
 
 void NewGame()
 {
-    _currentLevel = 1;
+    _currentLevel = 4;
 
     // Clear the sprites
     _pGame->CleanupSprites();
 
-	BitmapLevelLoader::GenerateLevelFromBitmap(IDB_LEVEL01, 10);
+	BitmapLevelLoader::GenerateLevelFromBitmap(IDB_LEVEL04, 10);
 
     // Create the car sprite
     RECT rcBounds = { 0, 0, 600, 450 };
-    _pCarSprite = new PlayerSprite(_pCarBitmap, rcBounds, BA_WRAP);
-    _pCarSprite->SetPosition(10, 10);
-    _pGame->AddSprite(_pCarSprite);
-	_pCarSprite->SetNumFrames(9, FALSE, TRUE); // Set number of frames and flippable
+    _pPlayerSprite = new PlayerSprite(_pPlayerBitmap, rcBounds, BA_WRAP);
+    _pPlayerSprite->SetPosition(10, 10);
+    _pGame->AddSprite(_pPlayerSprite);
+	_pPlayerSprite->SetNumFrames(9, FALSE, TRUE); // Set number of frames and flippable
 
 	
 
     // Initialize the game variables
-    _iFireInputDelay = 0;
-    _iScore = 0;
-    _iNumLives = 3;
-    _iDifficulty = 80;
     _bGameOver = FALSE;
 
     // Play the background music
@@ -127,17 +118,7 @@ void GameEnd()
 
   // Cleanup the bitmaps
   delete _pDesertBitmap;
-  delete _pCarBitmap;
-  delete _pSmCarBitmap;
-  delete _pMissileBitmap;
-  delete _pBlobboBitmap;
-  delete _pBMissileBitmap;
-  delete _pJellyBitmap;
-  delete _pJMissileBitmap;
-  delete _pTimmyBitmap;
-  delete _pTMissileBitmap;
-  delete _pSmExplosionBitmap;
-  delete _pLgExplosionBitmap;
+  delete _pPlayerBitmap;
   delete _pGameOverBitmap;
   delete _pGame->_groundBitmap;
   delete _pGame->_eggBitmap;
@@ -193,10 +174,7 @@ void GamePaint(HDC hDC)
     SetTextColor(hDC, RGB(255, 255, 255));
     DrawText(hDC, szEggs, -1, &rectEggs, DT_SINGLELINE | DT_LEFT | DT_VCENTER);
 
-    // Draw the number of remaining lives (cars)
-    // for (int i = 0; i < _iNumLives; i++)
-    //   _pSmCarBitmap->Draw(hDC, 520 + (_pSmCarBitmap->GetWidth() * i), 10, TRUE);
-
+ 
     // Draw the game over message, if necessary
     if (_bGameOver)
         _pGameOverBitmap->Draw(hDC, 190, 149, TRUE);
@@ -232,10 +210,10 @@ void LoadCurrentLevel() {
 
     // Re-create player sprite, reset variables, etc.
     RECT rcBounds = { 0, 0, 600, 450 };
-    _pCarSprite = new PlayerSprite(_pCarBitmap, rcBounds, BA_WRAP);
-    _pCarSprite->SetPosition(10, 10);
-	_pCarSprite->SetNumFrames(9, FALSE, TRUE); // Set number of frames and flippable
-    _pGame->AddSprite(_pCarSprite);
+    _pPlayerSprite = new PlayerSprite(_pPlayerBitmap, rcBounds, BA_WRAP);
+    _pPlayerSprite->SetPosition(10, 10);
+	_pPlayerSprite->SetNumFrames(9, FALSE, TRUE); // Set number of frames and flippable
+    _pGame->AddSprite(_pPlayerSprite);
 
     _bGameOver = false;
 }
@@ -268,15 +246,11 @@ void GameCycle()
       return;
     }
 
-    // Randomly add aliens
-    if ((rand() % _iDifficulty) == 0)
-      //AddAlien();
-
     // Update the background
     _pBackground->Update();
 
     // Update the sprites
-    //_pCarSprite->isOnGround = false;
+    //_pPlayerSprite->isOnGround = false;
 
     _pGame->UpdateSprites();
 
@@ -301,7 +275,7 @@ void HandleKeys()
   if (!_bGameOver)
   {
     // Move the car based upon left/right key presses
-    POINT ptVelocity = _pCarSprite->GetVelocity();
+    POINT ptVelocity = _pPlayerSprite->GetVelocity();
 
     //  DAMPING EKLEND�
     const float dampingFactor = 0.85f;   // daha çok yavaşlatır
@@ -326,17 +300,17 @@ void HandleKeys()
       // --- Zıplama (Space tuşu ile) ---
     if (GetAsyncKeyState(VK_SPACE) < 0)
     {
-      _pCarSprite->HandleKeyDown(VK_SPACE);  // Yerçekimine göre zıplama
+      _pPlayerSprite->HandleKeyDown(VK_SPACE);  // Yerçekimine göre zıplama
     }
   
 
-    if (GetAsyncKeyState(VK_UP) < 0 && _pCarSprite->isCollidingWithLadder)
+    if (GetAsyncKeyState(VK_UP) < 0 && _pPlayerSprite->isCollidingWithLadder)
     {
-        _pCarSprite->velocityY = max(ptVelocity.y - 1, -maxSpeed); // Merdivende yukarı çıkma hızı
+        _pPlayerSprite->velocityY = max(ptVelocity.y - 1, -maxSpeed); // Merdivende yukarı çıkma hızı
     }
-    else if (GetAsyncKeyState(VK_DOWN) < 0 && _pCarSprite->isCollidingWithLadder)
+    else if (GetAsyncKeyState(VK_DOWN) < 0 && _pPlayerSprite->isCollidingWithLadder)
     {
-        _pCarSprite->velocityY = min(ptVelocity.y + 1, maxSpeed); // Merdivende yukarı çıkma hızı
+        _pPlayerSprite->velocityY = min(ptVelocity.y + 1, maxSpeed); // Merdivende yukarı çıkma hızı
     }
     else
     {
@@ -345,7 +319,7 @@ void HandleKeys()
         if (abs(ptVelocity.y) < 1) ptVelocity.y = 0;
     }
      
-    _pCarSprite->SetVelocity(ptVelocity);
+    _pPlayerSprite->SetVelocity(ptVelocity);
 
 
    
@@ -398,11 +372,11 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
         pSpriteHitter->SetVelocity(-pSpriteHitter->GetVelocity().x, 0);
     }
     if ((pHitter == _invisivbleEdgeBitmap && (pHittee == _stalkerEnemyBitmap))) {
-        RECT rcPlayer = _pCarSprite->GetPosition();
+        RECT rcPlayer = _pPlayerSprite->GetPosition();
         RECT rcAlien = pSpriteHittee->GetPosition();
         RECT rcinvisibleEdge = pSpriteHitter->GetPosition();
         // Merkezden merkeze uzaklığı hesapla
-        int dx = (rcPlayer.left + _pCarSprite->GetWidth() / 2) - (rcAlien.left + pSpriteHittee->GetWidth() / 2);
+        int dx = (rcPlayer.left + _pPlayerSprite->GetWidth() / 2) - (rcAlien.left + pSpriteHittee->GetWidth() / 2);
         int dx1 = (rcinvisibleEdge.left + pSpriteHitter->GetWidth() / 2) - (rcAlien.left + pSpriteHittee->GetWidth() / 2);
         if (dx * dx1 >= 0)
         {
@@ -415,11 +389,11 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
         
     }
     if (pHittee == _invisivbleEdgeBitmap && (pHitter == _stalkerEnemyBitmap)) {
-        RECT rcPlayer = _pCarSprite->GetPosition();
+        RECT rcPlayer = _pPlayerSprite->GetPosition();
         RECT rcAlien = pSpriteHitter->GetPosition();
         RECT rcinvisibleEdge = pSpriteHittee->GetPosition();
         // Merkezden merkeze uzaklığı hesapla
-        int dx = (rcPlayer.left + _pCarSprite->GetWidth() / 2) - (rcAlien.left + pSpriteHitter->GetWidth() / 2);
+        int dx = (rcPlayer.left + _pPlayerSprite->GetWidth() / 2) - (rcAlien.left + pSpriteHitter->GetWidth() / 2);
         int dx1 = (rcinvisibleEdge.left + pSpriteHittee->GetWidth() / 2) - (rcAlien.left + pSpriteHitter->GetWidth() / 2);
         if (dx * dx1 >= 0)
         {
@@ -429,7 +403,7 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
         }
     }
 
-    if (pHitter == _pCarBitmap) {
+    if (pHitter == _pPlayerBitmap) {
         if (pHittee == _pGame->_greenEnemyBitmap || pHittee == _pGame->_chaserEnemyBitmap || pHittee == _pGame->_stalkerEnemyBitmap)
         {
             PlaySound((LPCSTR)IDW_GAMEOVER, _hInstance, SND_ASYNC |
@@ -437,7 +411,7 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
             _bGameOver = true;
         }
     }
-  if (pHittee == _pCarBitmap) {
+  if (pHittee == _pPlayerBitmap) {
 
 
       if (pHitter == _pGame->_greenEnemyBitmap || pHitter == _pGame->_chaserEnemyBitmap || pHitter == _pGame->_stalkerEnemyBitmap)
@@ -450,7 +424,7 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 
       if (pHitter == _pGame->_ladderBitmap)
       {
-          _pCarSprite->isCollidingWithLadder = true;
+          _pPlayerSprite->isCollidingWithLadder = true;
       }
 
       if (pHitter == _pGame->_eggBitmap)
@@ -460,35 +434,29 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
 
       if (pHitter == _pGame->_groundBitmap)
       {
-          //_pCarSprite->isOnGround = true;
+          //_pPlayerSprite->isOnGround = true;
 
-          RECT rcPlayer = _pCarSprite->GetPosition();
+          RECT rcPlayer = _pPlayerSprite->GetPosition();
           RECT rcGround = pSpriteHitter->GetPosition();
-          POINT ptVelocity = _pCarSprite->GetVelocity();
+          POINT ptVelocity = _pPlayerSprite->GetVelocity();
 
-          // Use a small tolerance value. This allows the check to succeed even if
-          // the player has slightly passed through the ground's surface due to its velocity.
+          // small tolerance value.
           const int tolerance = 10;
 
-          // Check two conditions:
-          // 1. The player is moving downwards (or is stationary vertically). This prevents
-          //    the check from triggering while jumping up through a platform from below.
-          // 2. The player's bottom edge is at or slightly below the ground's top edge.
+       
           if (ptVelocity.y >= 0
               && rcPlayer.bottom <= rcGround.top + tolerance
               && rcPlayer.bottom >= rcGround.top - tolerance
               )
           {
               // Set the flag to indicate the player is on the ground.
-              // You can now use this flag in your player control logic (e.g., to allow jumping).
-              _pCarSprite->isOnGround = true; if (pHitter == _pGame->_ladderBitmap)
+              _pPlayerSprite->isOnGround = true; if (pHitter == _pGame->_ladderBitmap)
               {
-                  _pCarSprite->isCollidingWithLadder = true;
+                  _pPlayerSprite->isCollidingWithLadder = true;
               }
 
-              // To prevent the player from sinking into the ground, it's good practice
-              // to "snap" their position so they sit exactly on top of the ground.
-              _pCarSprite->SetPosition(rcPlayer.left, rcGround.top - _pCarSprite->GetHeight() + 4);
+              // "snap" player position so they sit exactly on top of the ground.
+              _pPlayerSprite->SetPosition(rcPlayer.left, rcGround.top - _pPlayerSprite->GetHeight() + 4);
 
           }
       }
@@ -498,74 +466,12 @@ BOOL SpriteCollision(Sprite* pSpriteHitter, Sprite* pSpriteHittee)
   return FALSE;
 }
 
-void SpriteDying(Sprite* pSprite)
-{
-  // See if an alien missile sprite is dying
-  if (pSprite->GetBitmap() == _pBMissileBitmap ||
-    pSprite->GetBitmap() == _pJMissileBitmap ||
-    pSprite->GetBitmap() == _pTMissileBitmap)
-  {
-    // Play the small explosion sound
-    PlaySound((LPCSTR)IDW_SMEXPLODE, _hInstance, SND_ASYNC |
-      SND_RESOURCE | SND_NOSTOP);
 
-    // Create a small explosion sprite at the missile's position
-    RECT rcBounds = { 0, 0, 600, 450 };
-    RECT rcPos = pSprite->GetPosition();
-    Sprite* pSprite = new Sprite(_pSmExplosionBitmap, rcBounds);
-    pSprite->SetNumFrames(8, TRUE);
-    pSprite->SetPosition(rcPos.left, rcPos.top);
-    _pGame->AddSprite(pSprite);
-  }
-}
-
-//-----------------------------------------------------------------
-// Functions
-//-----------------------------------------------------------------
-
-
-void AddAlien()
-{
-  // Create a new random alien sprite
-  RECT          rcBounds = { 0, 0, 600, 410 };
-  AlienSprite*  pSprite;
-  
-  // Rastgele alien türü seç (3 tür artık)
-  switch(rand() % 3)  
-  {
-  case 0:
-    // Blobbo 
-    pSprite = new AlienSprite(_pBlobboBitmap, rcBounds, BA_BOUNCE);
-    pSprite->SetNumFrames(8);
-    pSprite->SetPosition(rand() % 600, rand() % 370);
-    pSprite->SetVelocity((rand() % 5) - 2, (rand() % 5) + 3);
-    break;
-  case 1:
-    // Chaser (Takipçi) - Jelly bitmap'ini kullanıyoruz
-    pSprite = new AlienSprite(_pJellyBitmap, rcBounds, BA_BOUNCE);
-    pSprite->SetNumFrames(8);
-    pSprite->SetPosition(rand() % 600, rand() % 370);
-    pSprite->SetVelocity(0, 0);  // Başlangıç hızı 0
-    pSprite->SetChaser(true);    // Takipçi olarak işaretle
-    break;
-  case 2:
-    // Timmy
-    pSprite = new AlienSprite(_pTimmyBitmap, rcBounds, BA_WRAP);
-    pSprite->SetNumFrames(8);
-    pSprite->SetPosition(rand() % 600, rand() % 370);
-    pSprite->SetVelocity((rand() % 7) + 3, 0);
-    break;
-  }
-
-  // Add the alien sprite
-  _pGame->AddSprite(pSprite);
-}
 
 void CollectEgg(Sprite* pEgg)
 {
 	pEgg->Kill();
 	_iScore += 1;
-	_iDifficulty = max(80 - (_iScore / 20), 20);
 
     _eggsCollected++; // Increment collected eggs
 

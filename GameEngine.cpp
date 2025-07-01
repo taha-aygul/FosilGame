@@ -408,7 +408,6 @@ void GameEngine::UpdateSprites()
   for (Sprite* sp : deleteList)
   {
       // Creates explosion / transient sprites
-      SpriteDying(sp);
       delete(sp);
   }
 

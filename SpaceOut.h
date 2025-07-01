@@ -25,32 +25,18 @@ GameEngine*       _pGame;
 HDC               _hOffscreenDC;
 HBITMAP           _hOffscreenBitmap;
 CustomBitmap*           _pDesertBitmap;
-CustomBitmap*           _pCarBitmap;
-CustomBitmap*           _pSmCarBitmap;
-CustomBitmap*           _pMissileBitmap;
-CustomBitmap*           _pBlobboBitmap;
-CustomBitmap*           _pBMissileBitmap;
-CustomBitmap*           _pJellyBitmap;
-CustomBitmap*           _pJMissileBitmap;
-CustomBitmap*           _pTimmyBitmap;
-CustomBitmap*           _pTMissileBitmap;
-CustomBitmap*           _pSmExplosionBitmap;
+CustomBitmap*           _pPlayerBitmap;
 CustomBitmap*           _pLgExplosionBitmap;
 CustomBitmap*           _pGameOverBitmap;
 CustomBitmap*			_chaserEnemyBitmap;
 
-CustomBitmap* deneme2Bitmap;
-
 StarryBackground* _pBackground;
-PlayerSprite*           _pCarSprite;
-int               _iFireInputDelay;
-int               _iNumLives, _iScore, _iDifficulty;
+PlayerSprite*           _pPlayerSprite;
 BOOL              _bGameOver;
-
+INT     _iScore;
 //-----------------------------------------------------------------
 // Function Declarations
 //-----------------------------------------------------------------
 void NewGame();
-void AddAlien();
 void CollectEgg(Sprite* pEgg);
 void LoadCurrentLevel();

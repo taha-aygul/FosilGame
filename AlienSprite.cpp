@@ -12,14 +12,8 @@
 //-----------------------------------------------------------------
 // External Global Variables
 //-----------------------------------------------------------------
-extern CustomBitmap* _pBlobboBitmap;
-extern CustomBitmap* _pBMissileBitmap;
-extern CustomBitmap* _pJellyBitmap;
-extern CustomBitmap* _pJMissileBitmap;
-extern CustomBitmap* _pTimmyBitmap;
-extern CustomBitmap* _pTMissileBitmap;
 extern int     _iDifficulty;
-extern PlayerSprite* _pCarSprite;
+extern PlayerSprite* _pPlayerSprite;
 
 //-----------------------------------------------------------------
 // AlienSprite Constructor(s)/Destructor
@@ -46,10 +40,10 @@ SPRITEACTION AlienSprite::Update()
   saSpriteAction = Sprite::Update();
 
   // Eğer bu bir takipçi alien ise
-  if (isChaser && _pCarSprite != NULL)
+  if (isChaser && _pPlayerSprite != NULL)
   {
     // Oyuncunun pozisyonunu al
-    RECT rcPlayer = _pCarSprite->GetPosition();
+    RECT rcPlayer = _pPlayerSprite->GetPosition();
     RECT rcAlien = GetPosition();
     
     // Oyuncuya doğru hareket et
@@ -69,19 +63,19 @@ SPRITEACTION AlienSprite::Update()
       
     SetVelocity(ptVelocity);
   }
-  else if (isStalker && _pCarSprite != NULL)
+  else if (isStalker && _pPlayerSprite != NULL)
   {
-      RECT rcPlayer = _pCarSprite->GetPosition();
+      RECT rcPlayer = _pPlayerSprite->GetPosition();
       RECT rcAlien = GetPosition();
       POINT ptVelocity = GetVelocity();
 
       // Merkezden merkeze uzaklığı hesapla
-      int dx = (rcPlayer.left + _pCarSprite->GetWidth() / 2) - (rcAlien.left + GetWidth() / 2);
-      int dy = (rcPlayer.top + _pCarSprite->GetHeight() / 2) - (rcAlien.top + GetHeight() / 2);
+      int dx = (rcPlayer.left + _pPlayerSprite->GetWidth() / 2) - (rcAlien.left + GetWidth() / 2);
+      int dy = (rcPlayer.top + _pPlayerSprite->GetHeight() / 2) - (rcAlien.top + GetHeight() / 2);
       float distance = sqrtf(static_cast<float>(dx * dx + dy * dy));
 
       // Yakınsa X ekseninde hareket et
-      if (distance <130.0f)
+      if (distance <200.0f)
       {
           if (abs(dx) > 2)
               ptVelocity.x = (dx > 0) ? 1 : -1;
@@ -101,32 +95,3 @@ SPRITEACTION AlienSprite::Update()
   return saSpriteAction;
 }
 
-Sprite* AlienSprite::AddSprite()
-{
-  // Create a new missile sprite
-  RECT    rcBounds = { 0, 0, 640, 410 };
-  RECT    rcPos = GetPosition();
-  Sprite* pSprite = NULL;
-  if (GetBitmap() == _pBlobboBitmap)
-  {
-    // Blobbo missile
-    pSprite = new Sprite(_pBMissileBitmap, rcBounds, BA_DIE);
-    pSprite->SetVelocity(0, 7);
-  }
-  else if (GetBitmap() == _pJellyBitmap)
-  {
-    // Jelly missile
-    pSprite = new Sprite(_pJMissileBitmap, rcBounds, BA_DIE);
-    pSprite->SetVelocity(0, 5);
-  }
-  else
-  {
-    // Timmy missile
-    pSprite = new Sprite(_pTMissileBitmap, rcBounds, BA_DIE);
-    pSprite->SetVelocity(0, 3);
-  }
-
-  // Set the missile sprite's position and return it
-  pSprite->SetPosition(rcPos.left + (GetWidth() / 2), rcPos.bottom);
-  return pSprite;
-}
